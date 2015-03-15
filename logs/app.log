@@ -1,0 +1,11 @@
+[2015-03-15 15:36:33.370] [INFO] console - Express server listen on port 3000
+[2015-03-15 15:41:28.770] [INFO] console - Express server listen on port 3000
+[2015-03-15 15:52:29.343] [INFO] console - Express server listen on port 3000
+[2015-03-15 15:52:32.255] [INFO] app - GET /
+[2015-03-15 15:52:32.469] [INFO] app - GET /stylesheets/bootstrap.min.css
+[2015-03-15 15:52:32.474] [INFO] app - GET /stylesheets/signin.css
+[2015-03-15 15:52:32.480] [INFO] app - GET /public/javascripts/jquery.min.js
+[2015-03-15 15:52:32.484] [INFO] app - GET /stylesheets/style.css
+[2015-03-15 15:52:32.488] [INFO] app - GET /public/javascripts/bootstrap.min.js
+[2015-03-15 15:52:32.538] [INFO] app - GET /fonts/icomoon.woff?keorcf
+[2015-03-15 15:52:32.582] [INFO] app - GET /favicon.ico
