@@ -1,19 +1,54 @@
 <% include header.ejs %>
 <body>
-    <div class="singin">
-        <form class="form-signin">
-            <h2 class="form-signin-heading">请登录</h2>
-            <label for="inputUsername" class="sr-only">用户名</label>
-            <input type="text" id="inputUsername" class="form-control" placeholder="用户名" required autofocus>
-            <label for="inputPassword" class="sr-only">密码</label>
-            <input type="password" id="inputPassword" class="form-control" placeholder="密码" required>
-
-            <div class="checkbox">
-                <label>
-                    <input type="checkbox" value="remember-me"> 记住我
-                </label>
-            </div>
-            <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-        </form>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="/">学生考勤管理系统</a>
+        </div>
     </div>
+</nav>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-md-6 sys-abstract">
+            <h1 class="cover-heading">标题</h1>
+            <p class="lead">系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要</p>
+            <p class="lead">
+                <a href="#" class="btn btn-lg btn-default">了解更多</a>
+            </p>
+        </div>
+        <div class="col-sm-6 col-md-6 singin">
+            <form class="form-signin" action="home" method="post">
+                <h2 class="form-signin-heading">请登录</h2>
+                <label for="inputUsername" class="sr-only">用户名</label>
+                <input type="text" name="username" class="form-control" placeholder="用户名" required>
+                <label for="inputPassword" class="sr-only">密码</label>
+                <input type="password" name="password" class="form-control" placeholder="密码" required>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" value="remember-me"> 记住我
+                    </label>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+            </form>
+        </div><!-- end signin -->
+    </div>
+</div><!-- end container -->
+
+<div class="footer">
+    <div class="github">
+        <a href="https://github.com/bamatong/myGraduateThesis" type="button" class="btn btn-default btn-sm"
+           aria-label="Left Align">
+            <span class="icon-github" aria-hidden="true"></span> Fork this project on GitHub
+        </a>
+    </div>
+    <div class="developer">
+        <span>&copy 2015 Developed by Tangzhongwei. Based on
+            <a href="https://nodejs.org/">Node.js</a>,
+            <a href="http://expressjs.com/">Express 4.x</a>,
+            <a href="http://www.mysql.com/">MySQL</a>,
+            <a href="http://v3.bootcss.com/">Bootstrap3</a>.
+        </span>
+    </div>
+</div>
 <% include footer.ejs %>

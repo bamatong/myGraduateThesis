@@ -1,11 +1,234 @@
-[2015-03-15 15:36:33.370] [INFO] console - Express server listen on port 3000
-[2015-03-15 15:41:28.770] [INFO] console - Express server listen on port 3000
-[2015-03-15 15:52:29.343] [INFO] console - Express server listen on port 3000
-[2015-03-15 15:52:32.255] [INFO] app - GET /
-[2015-03-15 15:52:32.469] [INFO] app - GET /stylesheets/bootstrap.min.css
-[2015-03-15 15:52:32.474] [INFO] app - GET /stylesheets/signin.css
-[2015-03-15 15:52:32.480] [INFO] app - GET /public/javascripts/jquery.min.js
-[2015-03-15 15:52:32.484] [INFO] app - GET /stylesheets/style.css
-[2015-03-15 15:52:32.488] [INFO] app - GET /public/javascripts/bootstrap.min.js
-[2015-03-15 15:52:32.538] [INFO] app - GET /fonts/icomoon.woff?keorcf
-[2015-03-15 15:52:32.582] [INFO] app - GET /favicon.ico
+[2015-03-16 15:35:35.113] [INFO] normal - POST /home 200 83 ms
+[2015-03-16 15:35:35.268] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 15:35:35.277] [INFO] normal - GET /stylesheets/style.css 304 1 ms
+[2015-03-16 15:35:35.299] [INFO] normal - GET /javascripts/jquery.min.js 304 14 ms
+[2015-03-16 15:35:35.300] [INFO] normal - GET /javascripts/bootstrap.min.js 304 12 ms
+[2015-03-16 15:35:35.301] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 8 ms
+[2015-03-16 15:35:35.306] [INFO] normal - GET /stylesheets/home.css 200 26 ms
+[2015-03-16 15:35:35.470] [INFO] normal - GET /javascripts/jquery.min.map 404 5 ms
+[2015-03-16 15:35:52.565] [INFO] normal - GET /javascripts/jquery.min.map 404 3 ms
+[2015-03-16 15:36:27.741] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:36:31.607] [INFO] normal - GET / 304 18 ms
+[2015-03-16 15:36:32.087] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 34 ms
+[2015-03-16 15:36:32.089] [INFO] normal - GET /stylesheets/style.css 304 32 ms
+[2015-03-16 15:36:32.093] [INFO] normal - GET /javascripts/jquery.min.js 304 24 ms
+[2015-03-16 15:36:32.098] [INFO] normal - GET /javascripts/bootstrap.min.js 304 26 ms
+[2015-03-16 15:36:32.106] [INFO] normal - GET /stylesheets/index.css 200 38 ms
+[2015-03-16 15:36:32.108] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 7 ms
+[2015-03-16 15:36:32.231] [INFO] normal - GET /javascripts/jquery.min.map 404 7 ms
+[2015-03-16 15:36:49.698] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 15:36:49.700] [INFO] normal - GET /stylesheets/style.css 304 1 ms
+[2015-03-16 15:36:49.701] [INFO] normal - GET /stylesheets/index.css 304 2 ms
+[2015-03-16 15:36:49.807] [INFO] normal - GET /javascripts/jquery.min.map 404 2 ms
+[2015-03-16 15:39:45.180] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:39:47.911] [INFO] normal - GET / 304 18 ms
+[2015-03-16 15:39:48.169] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 19 ms
+[2015-03-16 15:39:48.186] [INFO] normal - GET /javascripts/jquery.min.js 304 10 ms
+[2015-03-16 15:39:48.189] [INFO] normal - GET /javascripts/bootstrap.min.js 304 12 ms
+[2015-03-16 15:39:48.191] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 13 ms
+[2015-03-16 15:39:48.196] [INFO] normal - GET /stylesheets/style.css 200 22 ms
+[2015-03-16 15:39:48.202] [INFO] normal - GET /stylesheets/index.css 200 26 ms
+[2015-03-16 15:39:48.294] [INFO] normal - GET /fonts/icomoon.woff?keorcf 304 1 ms
+[2015-03-16 15:39:48.322] [INFO] normal - GET /javascripts/jquery.min.map 404 13 ms
+[2015-03-16 15:39:52.651] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:39:52.659] [INFO] normal - POST /home 200 82 ms
+[2015-03-16 15:39:52.811] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 15:39:52.814] [INFO] normal - GET /stylesheets/style.css 304 1 ms
+[2015-03-16 15:39:52.821] [INFO] normal - GET /javascripts/jquery.min.js 304 3 ms
+[2015-03-16 15:39:52.822] [INFO] normal - GET /javascripts/bootstrap.min.js 304 3 ms
+[2015-03-16 15:39:52.824] [INFO] normal - GET /stylesheets/home.css 200 7 ms
+[2015-03-16 15:39:52.826] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 2 ms
+[2015-03-16 15:41:28.174] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:41:33.458] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:41:33.488] [INFO] normal - POST /home 200 77 ms
+[2015-03-16 15:41:33.676] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 16 ms
+[2015-03-16 15:41:33.681] [INFO] normal - GET /stylesheets/style.css 304 16 ms
+[2015-03-16 15:41:33.686] [INFO] normal - GET /javascripts/jquery.min.js 304 18 ms
+[2015-03-16 15:41:33.687] [INFO] normal - GET /javascripts/bootstrap.min.js 304 19 ms
+[2015-03-16 15:41:33.688] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 19 ms
+[2015-03-16 15:41:33.691] [INFO] normal - GET /stylesheets/home.css 200 24 ms
+[2015-03-16 15:43:04.894] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:43:11.414] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:43:11.448] [INFO] normal - POST /home 200 106 ms
+[2015-03-16 15:43:11.962] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 14 ms
+[2015-03-16 15:43:11.965] [INFO] normal - GET /stylesheets/style.css 304 13 ms
+[2015-03-16 15:43:11.967] [INFO] normal - GET /stylesheets/home.css 304 13 ms
+[2015-03-16 15:43:11.968] [INFO] normal - GET /javascripts/jquery.min.js 304 14 ms
+[2015-03-16 15:43:11.969] [INFO] normal - GET /javascripts/bootstrap.min.js 304 14 ms
+[2015-03-16 15:43:11.970] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 14 ms
+[2015-03-16 15:44:27.096] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:44:32.145] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:44:32.176] [INFO] normal - POST /home 200 100 ms
+[2015-03-16 15:44:32.640] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 13 ms
+[2015-03-16 15:44:32.643] [INFO] normal - GET /stylesheets/style.css 304 13 ms
+[2015-03-16 15:44:32.647] [INFO] normal - GET /javascripts/jquery.min.js 304 14 ms
+[2015-03-16 15:44:32.647] [INFO] normal - GET /javascripts/bootstrap.min.js 304 13 ms
+[2015-03-16 15:44:32.650] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 15 ms
+[2015-03-16 15:44:32.654] [INFO] normal - GET /stylesheets/home.css 200 21 ms
+[2015-03-16 15:44:41.501] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 2 ms
+[2015-03-16 15:44:41.504] [INFO] normal - GET /stylesheets/style.css 304 2 ms
+[2015-03-16 15:44:41.504] [INFO] normal - GET /stylesheets/home.css 304 2 ms
+[2015-03-16 15:44:41.511] [INFO] normal - GET /javascripts/jquery.min.map 404 9 ms
+[2015-03-16 15:46:28.826] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:46:33.130] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:46:33.162] [INFO] normal - POST /home 200 108 ms
+[2015-03-16 15:46:33.384] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 14 ms
+[2015-03-16 15:46:33.404] [INFO] normal - GET /stylesheets/style.css 304 17 ms
+[2015-03-16 15:46:33.406] [INFO] normal - GET /stylesheets/home.css 304 17 ms
+[2015-03-16 15:46:33.409] [INFO] normal - GET /javascripts/jquery.min.js 304 12 ms
+[2015-03-16 15:46:33.411] [INFO] normal - GET /javascripts/bootstrap.min.js 304 13 ms
+[2015-03-16 15:46:33.412] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 13 ms
+[2015-03-16 15:46:33.547] [INFO] normal - GET /javascripts/jquery.min.map 404 15 ms
+[2015-03-16 15:47:38.622] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 15:47:38.625] [INFO] normal - GET /stylesheets/style.css 304 2 ms
+[2015-03-16 15:47:38.626] [INFO] normal - GET /stylesheets/home.css 304 2 ms
+[2015-03-16 15:47:38.656] [INFO] normal - GET /javascripts/jquery.min.map 404 5 ms
+[2015-03-16 15:50:43.338] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:50:46.824] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:50:46.854] [INFO] normal - POST /home 200 100 ms
+[2015-03-16 15:50:47.362] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 11 ms
+[2015-03-16 15:50:47.365] [INFO] normal - GET /stylesheets/style.css 304 12 ms
+[2015-03-16 15:50:47.366] [INFO] normal - GET /stylesheets/home.css 304 11 ms
+[2015-03-16 15:50:47.371] [INFO] normal - GET /javascripts/jquery.min.js 304 3 ms
+[2015-03-16 15:50:47.371] [INFO] normal - GET /javascripts/bootstrap.min.js 304 4 ms
+[2015-03-16 15:50:47.372] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 4 ms
+[2015-03-16 15:50:47.493] [INFO] normal - GET /javascripts/jquery.min.map 404 9 ms
+[2015-03-16 15:53:11.253] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:53:15.267] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:53:15.297] [INFO] normal - POST /home 200 74 ms
+[2015-03-16 15:53:15.490] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 8 ms
+[2015-03-16 15:53:15.499] [INFO] normal - GET /stylesheets/style.css 304 8 ms
+[2015-03-16 15:53:15.505] [INFO] normal - GET /javascripts/bootstrap.min.js 304 8 ms
+[2015-03-16 15:53:15.509] [INFO] normal - GET /javascripts/jquery.min.js 304 3 ms
+[2015-03-16 15:53:15.511] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 4 ms
+[2015-03-16 15:53:15.515] [INFO] normal - GET /stylesheets/home.css 200 21 ms
+[2015-03-16 15:53:56.242] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 3 ms
+[2015-03-16 15:53:56.243] [INFO] normal - GET /stylesheets/style.css 304 3 ms
+[2015-03-16 15:53:56.243] [INFO] normal - GET /stylesheets/home.css 304 2 ms
+[2015-03-16 15:53:56.268] [INFO] normal - GET /javascripts/jquery.min.map 404 9 ms
+[2015-03-16 15:57:12.471] [INFO] console - Express server listen on port 3000
+[2015-03-16 15:57:15.951] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 15:57:15.981] [INFO] normal - POST /home 200 70 ms
+[2015-03-16 15:57:16.484] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 9 ms
+[2015-03-16 15:57:16.489] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 15:57:16.495] [INFO] normal - GET /javascripts/jquery.min.js 304 9 ms
+[2015-03-16 15:57:16.496] [INFO] normal - GET /javascripts/bootstrap.min.js 304 8 ms
+[2015-03-16 15:57:16.497] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 10 ms
+[2015-03-16 15:57:16.500] [INFO] normal - GET /stylesheets/home.css 200 14 ms
+[2015-03-16 15:57:16.618] [INFO] normal - GET /javascripts/jquery.min.map 404 8 ms
+[2015-03-16 15:57:37.077] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 4 ms
+[2015-03-16 15:57:37.077] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 15:57:37.078] [INFO] normal - GET /stylesheets/home.css 304 5 ms
+[2015-03-16 15:57:37.105] [INFO] normal - GET /javascripts/jquery.min.map 404 4 ms
+[2015-03-16 16:14:40.885] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:14:44.234] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:14:44.265] [INFO] normal - POST /home 200 77 ms
+[2015-03-16 16:14:44.471] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 15 ms
+[2015-03-16 16:14:44.479] [INFO] normal - GET /javascripts/jquery.min.js 304 4 ms
+[2015-03-16 16:14:44.484] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 16:14:44.485] [INFO] normal - GET /stylesheets/home.css 304 4 ms
+[2015-03-16 16:14:44.486] [INFO] normal - GET /javascripts/bootstrap.min.js 304 3 ms
+[2015-03-16 16:14:44.487] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 3 ms
+[2015-03-16 16:15:02.878] [INFO] normal - GET /logout 404 7 ms
+[2015-03-16 16:15:48.232] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:15:50.370] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 23 ms
+[2015-03-16 16:15:50.378] [INFO] normal - GET /stylesheets/style.css 304 22 ms
+[2015-03-16 16:15:50.384] [INFO] normal - GET /stylesheets/home.css 304 3 ms
+[2015-03-16 16:15:50.385] [INFO] normal - GET /javascripts/jquery.min.js 304 4 ms
+[2015-03-16 16:15:50.386] [INFO] normal - GET /javascripts/bootstrap.min.js 304 4 ms
+[2015-03-16 16:15:50.388] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 5 ms
+[2015-03-16 16:15:52.608] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:15:52.633] [INFO] normal - POST /home 200 103 ms
+[2015-03-16 16:15:52.754] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 16:15:52.755] [INFO] normal - GET /stylesheets/style.css 304 2 ms
+[2015-03-16 16:15:52.760] [INFO] normal - GET /stylesheets/home.css 304 4 ms
+[2015-03-16 16:15:52.761] [INFO] normal - GET /javascripts/jquery.min.js 304 4 ms
+[2015-03-16 16:15:52.763] [INFO] normal - GET /javascripts/bootstrap.min.js 304 5 ms
+[2015-03-16 16:15:52.765] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 6 ms
+[2015-03-16 16:16:46.193] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:16:49.460] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:16:49.491] [INFO] normal - POST /home 200 75 ms
+[2015-03-16 16:16:49.958] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 11 ms
+[2015-03-16 16:16:49.967] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 16:16:49.968] [INFO] normal - GET /stylesheets/home.css 304 3 ms
+[2015-03-16 16:16:49.973] [INFO] normal - GET /javascripts/jquery.min.js 304 4 ms
+[2015-03-16 16:16:49.974] [INFO] normal - GET /javascripts/bootstrap.min.js 304 4 ms
+[2015-03-16 16:16:49.975] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 4 ms
+[2015-03-16 16:17:24.533] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:17:27.874] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:17:27.901] [INFO] normal - POST /home 200 70 ms
+[2015-03-16 16:17:28.373] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 11 ms
+[2015-03-16 16:17:28.382] [INFO] normal - GET /stylesheets/style.css 304 7 ms
+[2015-03-16 16:17:28.383] [INFO] normal - GET /stylesheets/home.css 304 6 ms
+[2015-03-16 16:17:28.386] [INFO] normal - GET /javascripts/jquery.min.js 304 7 ms
+[2015-03-16 16:17:28.386] [INFO] normal - GET /javascripts/bootstrap.min.js 304 7 ms
+[2015-03-16 16:17:28.387] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 8 ms
+[2015-03-16 16:18:59.256] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:19:02.627] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:19:02.653] [INFO] normal - POST /home 200 87 ms
+[2015-03-16 16:19:02.877] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 13 ms
+[2015-03-16 16:19:02.880] [INFO] normal - GET /stylesheets/style.css 304 13 ms
+[2015-03-16 16:19:02.881] [INFO] normal - GET /stylesheets/home.css 304 12 ms
+[2015-03-16 16:19:02.884] [INFO] normal - GET /javascripts/jquery.min.js 304 15 ms
+[2015-03-16 16:19:02.885] [INFO] normal - GET /javascripts/bootstrap.min.js 304 15 ms
+[2015-03-16 16:19:02.886] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 14 ms
+[2015-03-16 16:19:27.299] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:19:29.962] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:19:29.994] [INFO] normal - POST /home 200 103 ms
+[2015-03-16 16:19:30.195] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 16 ms
+[2015-03-16 16:19:30.204] [INFO] normal - GET /stylesheets/style.css 304 7 ms
+[2015-03-16 16:19:30.205] [INFO] normal - GET /stylesheets/home.css 304 6 ms
+[2015-03-16 16:19:30.207] [INFO] normal - GET /javascripts/jquery.min.js 304 8 ms
+[2015-03-16 16:19:30.208] [INFO] normal - GET /javascripts/bootstrap.min.js 304 8 ms
+[2015-03-16 16:19:30.211] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 11 ms
+[2015-03-16 16:22:42.931] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:22:46.488] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:22:46.516] [INFO] normal - POST /home 200 94 ms
+[2015-03-16 16:22:46.696] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 18 ms
+[2015-03-16 16:22:46.702] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 16:22:46.703] [INFO] normal - GET /stylesheets/home.css 304 3 ms
+[2015-03-16 16:22:46.705] [INFO] normal - GET /javascripts/jquery.min.js 304 5 ms
+[2015-03-16 16:22:46.706] [INFO] normal - GET /javascripts/bootstrap.min.js 304 6 ms
+[2015-03-16 16:22:46.708] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 1 ms
+[2015-03-16 16:25:12.834] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:25:15.781] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:25:15.812] [INFO] normal - POST /home 200 75 ms
+[2015-03-16 16:25:16.258] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 11 ms
+[2015-03-16 16:25:16.264] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 16:25:16.265] [INFO] normal - GET /stylesheets/home.css 304 4 ms
+[2015-03-16 16:25:16.267] [INFO] normal - GET /javascripts/jquery.min.js 304 6 ms
+[2015-03-16 16:25:16.268] [INFO] normal - GET /javascripts/bootstrap.min.js 304 6 ms
+[2015-03-16 16:25:16.269] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 7 ms
+[2015-03-16 16:30:08.624] [INFO] console - Express server listen on port 3000
+[2015-03-16 16:30:14.314] [INFO] normal - GET / 200 31 ms
+[2015-03-16 16:30:14.504] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 12 ms
+[2015-03-16 16:30:14.509] [INFO] normal - GET /stylesheets/style.css 304 3 ms
+[2015-03-16 16:30:14.511] [INFO] normal - GET /stylesheets/index.css 304 5 ms
+[2015-03-16 16:30:14.512] [INFO] normal - GET /javascripts/jquery.min.js 304 5 ms
+[2015-03-16 16:30:14.513] [INFO] normal - GET /javascripts/bootstrap.min.js 304 6 ms
+[2015-03-16 16:30:14.514] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 6 ms
+[2015-03-16 16:30:48.117] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:30:48.127] [INFO] normal - POST /home 200 111 ms
+[2015-03-16 16:30:48.569] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 16:30:48.573] [INFO] normal - GET /stylesheets/style.css 304 3 ms
+[2015-03-16 16:30:48.574] [INFO] normal - GET /stylesheets/home.css 304 3 ms
+[2015-03-16 16:30:48.575] [INFO] normal - GET /javascripts/jquery.min.js 304 3 ms
+[2015-03-16 16:30:48.583] [INFO] normal - GET /javascripts/bootstrap.min.js 304 6 ms
+[2015-03-16 16:30:48.589] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 6 ms
+[2015-03-16 16:34:35.082] [INFO] normal - GET /home 404 4 ms
+[2015-03-16 16:45:02.344] [INFO] normal - GET / 304 2 ms
+[2015-03-16 16:45:02.781] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 1 ms
+[2015-03-16 16:45:02.785] [INFO] normal - GET /stylesheets/style.css 304 2 ms
+[2015-03-16 16:45:02.788] [INFO] normal - GET /stylesheets/index.css 304 2 ms
+[2015-03-16 16:45:02.792] [INFO] normal - GET /javascripts/jquery.min.js 304 3 ms
+[2015-03-16 16:45:02.793] [INFO] normal - GET /javascripts/bootstrap.min.js 304 2 ms
+[2015-03-16 16:45:02.796] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 1 ms
+[2015-03-16 16:45:02.892] [INFO] normal - GET /fonts/icomoon.woff?keorcf 304 1 ms
+[2015-03-16 16:45:09.250] [INFO] console - 与MySQL数据库建立连接成功.
+[2015-03-16 16:45:09.258] [INFO] normal - POST /home 200 12 ms
+[2015-03-16 16:45:09.387] [INFO] normal - GET /stylesheets/bootstrap.min.css 304 3 ms
+[2015-03-16 16:45:09.388] [INFO] normal - GET /stylesheets/style.css 304 4 ms
+[2015-03-16 16:45:09.390] [INFO] normal - GET /stylesheets/home.css 304 4 ms
+[2015-03-16 16:45:09.392] [INFO] normal - GET /javascripts/jquery.min.js 304 1 ms
+[2015-03-16 16:45:09.394] [INFO] normal - GET /javascripts/bootstrap.min.js 304 1 ms
+[2015-03-16 16:45:09.401] [INFO] normal - GET /javascripts/ie10-viewport-bug-workaround.js 304 7 ms

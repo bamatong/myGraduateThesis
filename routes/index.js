@@ -1,9 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET index page. */
 router.get('/', function (req, res, next) {
-    res.render('index', {stylesheet: 'signin', title: '首页'});
+    res.render('index', {stylesheet: 'index', title: '首页'});
 });
 
 module.exports = router;

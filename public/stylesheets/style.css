@@ -1,5 +1,9 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 body {
-    padding: 50px;
     font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
     background-color: #eee;
 }
@@ -32,31 +36,6 @@ body {
 
 
 
-.footer-content {
-    padding: 15px;
-    margin: 0 auto;
-    /* Firefox */
-    display:-moz-box;
-    -moz-box-pack:center;
-    -moz-box-align:center;
-
-    /* Safari、Opera 以及 Chrome */
-    display:-webkit-box;
-    -webkit-box-pack:center;
-    -webkit-box-align:center;
-}
-
-.footer-content .github {
-    display: inline-block;
-}
-
-.footer-content .icon-github:before {
-    content: "\eab1";
-}
-
-.footer-content .developer{
-    display: inline-block;
-}
 
 
 

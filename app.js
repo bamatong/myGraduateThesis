@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 
 //加载路由控制
 var routes = require('./routes/index');
-var users = require('./routes/users');
+var home = require('./routes/home');
 
 //创建项目实例
 var app = express();
@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 
 //定义日志
-app.use(logger.log4js.connectLogger(logger.logger('app'), {format: ':method :url'}));
+app.use(logger.log4js.connectLogger(logger.logger('normal'), {format: ':method :url :status :response-time ms'}));
 //app.use(logger('dev'));
 
 //定义数据解析器
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 //匹配路径和路由
 app.use('/', routes);
-app.use('/users', users);
+app.use('/home', home);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
