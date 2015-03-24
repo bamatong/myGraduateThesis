@@ -1,0 +1,153 @@
+<% include header.ejs %>
+<body xmlns="http://www.w3.org/1999/html">
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    课程管理
+                    <small>添加课程</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div id="successMsg" class="alert alert-success alert-dismissible" role="alert" style="display: none">
+                    <i class="fa fa-check"></i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    添加课程成功
+                </div>
+                <div id="errMsg" class="alert alert-danger alert-dismissible" role="alert" style="display: none">
+                    <i class="fa fa-ban"></i>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <span id="errMessage"></span>
+                </div>
+                <div class="box box-primary course">
+                    <div class="box-header">
+                        <div class="box-title">
+                            请填写课程信息表
+                        </div>
+                    </div>
+                    <form id="form-addCourse" enctype="multipart/form-data">
+                        <div class="box-body">
+                            <div class="form-group form-inline">
+                                <label for="selectYear">学年</label>
+                                <select class="form-control" id="selectYear" name="year">
+                                    <option>2009-2010</option>
+                                    <option>2010-2011</option>
+                                    <option>2011-2012</option>
+                                    <option>2012-2013</option>
+                                    <option>2013-2014</option>
+                                    <option>2014-2015</option>
+                                    <option>2015-2016</option>
+                                    <option>2016-2017</option>
+                                </select>
+                                <label for="selectTerm">学期</label>
+                                <select class="form-control" id="selectTerm" name="term">
+                                    <option>上</option>
+                                    <option>下</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="inputCourseName">课程名</label>
+                                <input type="text" class="form-control" id="inputCourseName" name="courseName"
+                                       placeholder="课程名">
+                            </div>
+                            <div class="form-group">
+                                <label for="inputFile">导入学生名单</label>
+                                <input type="file" id="inputFile" name="student">
+
+                                <p class="help-block">支持Excel文件和txt格式文件,编码格式为:"utf-8",数据包括两列,分别是学生学号和姓名.</p>
+                            </div>
+                        </div>
+                        <div class="box-footer">
+                            <input type="submit" class="btn btn-primary" id="submit" value="提交"/>
+                        </div>
+                    </form>
+                    <!-- form -->
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/javascripts/ie10-viewport-bug-workaround.js"></script>
+<!-- jQuery plugin to validate form fields designed for Bootstrap -->
+<script src="/javascripts/bootstrapValidator.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#form-addCourse')
+                .bootstrapValidator({
+                    message: '无效的值',
+                    feedbackIcons: {
+                        valid: 'glyphicon glyphicon-ok-sign',
+                        invalid: 'glyphicon glyphicon-remove-sign',
+                        validating: 'glyphicon glyphicon-refresh'
+                    },
+                    fields: {
+                        courseName: {
+                            validators: {
+                                notEmpty: {
+                                    message: '课程名不能为空'
+                                },
+                                stringLength: {
+                                    max: 40,
+                                    message: '不能超过40个字符'
+                                }
+                            }
+                        },
+                        student: {
+                            message: 'The username is not valid',
+                            validators: {
+                                notEmpty: {
+                                    message: '请选择文件'
+                                },
+                                regexp: {
+                                    regexp: /\.txt|\.xlsx|\.xls/,
+                                    message: '只支持txt和Excel文件'
+                                }
+                            }
+                        }
+                    }
+                })
+                .on('success.form.bv', function (e) {
+                    // Prevent form submission
+                    e.preventDefault();
+                    //改用XMLHttpRequest对象提交
+                    var formData = new FormData();
+                    var files = document.getElementById('inputFile').files,
+                            year = document.getElementById('selectYear').value,
+                            term = document.getElementById('selectTerm').value,
+                            courseName = document.getElementById('inputCourseName').value;
+                    var student = files[0];
+                    formData.append('year', year);
+                    formData.append('term', term);
+                    formData.append('courseName', courseName);
+                    formData.append('student', student);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', '/home/addCourse', true);
+                    xhr.onload = function (e) {
+                        if (this.status == 200) {
+                            $('#form-addCourse').data('bootstrapValidator').resetForm(true);
+                            if (this.response == 'success') {
+                                $('#successMsg').show();
+                            } else {
+                                $('#errMsg').show();
+                                document.getElementById('errMessage').innerHTML = this.response;
+                            }
+                        }
+                    }
+                    xhr.send(formData);
+                });
+    });
+</script>
+</body>
+</html>

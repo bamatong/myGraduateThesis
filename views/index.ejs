@@ -11,35 +11,68 @@
     <div class="row">
         <div class="col-sm-6 col-md-6 sys-abstract">
             <h1 class="cover-heading">标题</h1>
+
             <p class="lead">系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要系统说明摘要</p>
+
             <p class="lead">
                 <a href="#" class="btn btn-lg btn-default">了解更多</a>
             </p>
         </div>
-        <div class="col-sm-6 col-md-6 singin">
-            <form class="form-signin" action="home" method="post">
-                <h2 class="form-signin-heading">请登录</h2>
-                <label for="inputUsername" class="sr-only">用户名</label>
-                <input type="text" name="username" class="form-control" placeholder="用户名" required>
-                <label for="inputPassword" class="sr-only">密码</label>
-                <input type="password" name="password" class="form-control" placeholder="密码" required>
-
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox" value="remember-me"> 记住我
-                    </label>
+        <!-- start signin -->
+        <div class="col-sm-6 col-md-6 signin">
+            <div class="box box-primary sign">
+                <div class="box-header">
+                    <div class="box-title">
+                        <span>登录系统</span>
+                    </div>
+                    <a class="signup-switch" href="#signup"><i class="fa fa-fw fa-hand-o-right"></i>注册账号</a>
                 </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-            </form>
+                <form class="form-sign" action="home" method="post" onsubmit="password.value=hex_sha1(password.value)">
+                    <div class="box-body">
+                        <label for="inputID" class="sr-only">账号</label>
+                        <input type="text" name="teacherID" class="form-control" placeholder="用户名" required>
+                        <label for="inputPassword" class="sr-only">密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="密码" required>
+
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" value="remember-me"> 记住我
+                            </label>
+                        </div>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+                    </div>
+                </form>
+            </div>
         </div><!-- end signin -->
+        <!-- start signup -->
+        <div class="col-sm-6 col-md-6 signup">
+            <div class="box box-primary sign">
+                <div class="box-header">
+                    <div class="box-title">
+                        <span>注册账号</span>
+                    </div>
+                    <a class="signin-switch" href="#signin"><i class="fa fa-fw fa-hand-o-right"></i>登录系统</a>
+                </div>
+                <form class="form-sign" action="signup" method="post" onsubmit="password.value=hex_sha1(password.value)">
+                    <div class="box-body">
+                        <label for="inputName" class="sr-only">姓名</label>
+                        <input type="text" name="teacherName" class="form-control" placeholder="姓名" required>
+                        <label for="inputID" class="sr-only">账号</label>
+                        <input type="text" name="teacherID" class="form-control" placeholder="用户名" required>
+                        <label for="inputPassword" class="sr-only">密码</label>
+                        <input type="password" name="password" class="form-control" placeholder="密码" required>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
+                    </div>
+                </form>
+            </div>
+        </div><!-- end signup -->
     </div>
 </div><!-- end container -->
-
-<div class="footer">
+<div class="footer" style="width: 100%">
     <div class="github">
         <a href="https://github.com/bamatong/myGraduateThesis" type="button" class="btn btn-default btn-sm"
            aria-label="Left Align">
-            <span class="icon-github" aria-hidden="true"></span> Fork this project on GitHub
+            <i class="fa fa-lg fa-github-alt"></i> Fork this project on GitHub
         </a>
     </div>
     <div class="developer">
@@ -51,4 +84,26 @@
         </span>
     </div>
 </div>
-<% include footer.ejs %>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script src="/javascripts/ie10-viewport-bug-workaround.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+<script  type="text/javascript">
+    $(document).ready(function(){
+        $(".signup").hide();
+        $(".signup-switch").click(function(){
+            $(".signin").hide();
+            $(".signup").show();
+        });
+        $(".signin-switch").click(function(){
+            $(".signup").hide();
+            $(".signin").show();
+        });
+    });
+</script>
+</body>
+</html>
