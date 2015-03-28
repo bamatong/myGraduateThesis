@@ -11,7 +11,7 @@ router.post('/', function (req, res, next) {
     var obj = req.body;
     teacher.signup(obj.teacherName, obj.teacherID, obj.password, function (err) {
         if (err) {
-            res.render('redirect', {message: err});
+            res.render('back2index', {message: err});
         } else {
             req.session.user = obj.teacherName;
             req.session.userID = obj.teacherID;

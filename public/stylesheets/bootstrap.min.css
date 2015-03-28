@@ -2689,35 +2689,39 @@ pre code {
 }
 
 table {
-    background-color: transparent
+    background-color: transparent;
+    /*自己改居中*/
+    text-align: center;
 }
 
 caption {
     padding-top: 8px;
     padding-bottom: 8px;
     color: #777;
-    text-align: left
+    /*自己改居中*/
+    text-align: center;
 }
 
 th {
-    text-align: left
+    /*自己改居中*/
+    text-align: center
 }
 
 .table {
     width: 100%;
     max-width: 100%;
-    margin-bottom: 20px
+    margin-bottom: 20px;
 }
 
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th {
     padding: 8px;
     line-height: 1.42857143;
-    vertical-align: top;
+    vertical-align: middle; /*自己改居中*/
     border-top: 1px solid #ddd
 }
 
 .table > thead > tr > th {
-    vertical-align: bottom;
+    vertical-align: middle; /*自己改居中*/
     border-bottom: 2px solid #ddd
 }
 
@@ -2811,7 +2815,7 @@ table td[class*=col-], table th[class*=col-] {
 
 .table-responsive {
     min-height: .01%;
-    overflow-x: auto
+    overflow-x: hidden;
 }
 
 @media screen and (max-width: 767px) {

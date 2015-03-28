@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+
+    <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
+
+    <title><%= title %></title>
+</head>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    课程管理
+                    <small>编辑课程</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div class="box box-primary box-lg">
+                    <div class="box-header">
+                        <div class="box-title">
+                            课程详细信息
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <form id="form-modifyCourse" enctype="multipart/form-data">
+                            <div class="form-group form-inline">
+                                <label for="selectYear">学年</label>
+                                <select class="form-control" id="selectYear" name="year">
+                                    <option value="2009-2010">2009-2010</option>
+                                    <option value="2010-2011">2010-2011</option>
+                                    <option value="2011-2012">2011-2012</option>
+                                    <option value="2012-2013">2012-2013</option>
+                                    <option value="2013-2014">2013-2014</option>
+                                    <option value="2014-2015">2014-2015</option>
+                                    <option value="2015-2016">2015-2016</option>
+                                    <option value="2016-2017">2016-2017</option>
+                                </select>
+                                <label for="selectTerm">学期</label>
+                                <select class="form-control" id="selectTerm" name="term">
+                                    <option value="上">上</option>
+                                    <option value="下">下</option>
+                                </select>
+                                <div class="form-group">
+                                    <label for="inputCourseName">课程名</label>
+                                    <input type="text" class="form-control" id="inputCourseName" name="courseName">
+                                </div>
+                                <input type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="top"
+                                       title="只修改学年,学期,课程名" value="修改课程"/>
+                            </div>
+                        </form>
+                        <div class="table-responsive">
+                            <table id="courseInfo" class="table table-bordered table-hover">
+                                <thead>
+                                <tr>
+                                    <th>学号</th>
+                                    <th>姓名</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <% students.forEach( function (student) { %>
+                                <tr>
+                                    <td><%= student.student_studentID %></td>
+                                    <td><%= student.student_studentName %></td>
+                                    <td>
+                                        <button class="btn btn-danger" onclick="delStudent(this);"
+                                                value="<%= student.student_studentID %>"
+                                                data-toggle="tooltip" data-placement="right" title="删除">
+                                            <i class="fa fa-lg fa-trash-o"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="box-footer">
+                        <a href="/home/showAndEdit/showCourse" class="btn btn-default">返回课程列表</a>
+                        <a class="btn btn-danger" onclick="delCourse();">删除课程</a>
+                        <a href="#" data-toggle="modal" data-target="#studentInfo" class="btn btn-success">新增学生</a>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- studentInfo Modal -->
+<div class="modal fade myModal" id="studentInfo" tabindex="-1" role="dialog" aria-labelledby="studentInfo"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="userInfo">学生信息</h4>
+            </div>
+            <div class="modal-body">
+                <form id="form-studentInfo">
+                    <div class="form-group">
+                        <label for="studentID" class="sr-only">学号</label>
+                        <input type="text" name="studentID" id="studentID" class="form-control" placeholder="学号">
+                    </div>
+                    <div class="form-group">
+                        <label for="studentName" class="sr-only">姓名</label>
+                        <input type="text" name="studentName" id="studentName" class="form-control" placeholder="姓名">
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success" value="提交"/>
+                        <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- jQuery plugin to validate form fields designed for Bootstrap -->
+<script src="/javascripts/bootstrapValidator.min.js"></script>
+
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/datatables.bootstrap3.js"></script>
+
+<script type="text/javascript">
+    var termID = '<%= termID %>',
+            courseID = '<%= courseID %>',
+            year = '<%= year %>',
+            term = '<%= whichTerm %>',
+            courseName = '<%= courseName %>';
+    var table = $('#courseInfo').dataTable({
+        "language": {"url": "/dataTables_language.json"},
+        "aoColumnDefs": [{"bSortable": false, "aTargets": [2]}]
+    });
+    $("[data-toggle='tooltip']").tooltip();
+    $('#selectYear').val(year).selected = true;
+    $('#selectTerm').val(term).selected = true;
+    $('#inputCourseName').val(courseName);
+
+    /**
+     * 添加学生
+     */
+    $('#form-studentInfo')
+            .bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok-sign',
+                    invalid: 'glyphicon glyphicon-remove-sign',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    studentID: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写学号'
+                            }
+                        }
+                    },
+                    studentName: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写学生姓名'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('success.form.bv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
+                var studentID = document.getElementById('studentID').value,
+                        studentName = document.getElementById('studentName').value,
+                        params = '?termID=' + termID + '&courseID=' + courseID + '&studentID=' + studentID + '&studentName=' + studentName,
+                        url = '/home/showAndEdit/editCourse/addStudent',
+                        xhr = new XMLHttpRequest();
+                xhr.open('POST', url + params, true);
+                xhr.onload = function (e) {
+                    if (this.status == 200) {
+                        if (this.response == 'success') {
+                            alert('添加学生成功!');
+                            location.reload();
+                        } else {
+                            alert(this.response.toString());
+                        }
+                    }
+                };
+                xhr.send();
+            });
+
+    /**
+     * 修改课程
+     */
+    $('#form-modifyCourse')
+            .bootstrapValidator({
+                feedbackIcons: {
+                    valid: 'glyphicon glyphicon-ok-sign',
+                    invalid: 'glyphicon glyphicon-remove-sign',
+                    validating: 'glyphicon glyphicon-refresh'
+                },
+                fields: {
+                    courseName: {
+                        validators: {
+                            notEmpty: {
+                                message: '请填写课程名字'
+                            }
+                        }
+                    }
+                }
+            })
+            .on('success.form.bv', function (e) {
+                // Prevent form submission
+                e.preventDefault();
+                var newYear = document.getElementById('selectYear').value,
+                        newTerm = document.getElementById('selectTerm').value,
+                        newCourseName = document.getElementById('inputCourseName').value;
+                if (year == newYear && term == newTerm && courseName == newCourseName) {
+                    alert('您没有做任何更改');
+                } else {
+                    var formData = new FormData(),
+                            url = '/home/showAndEdit/editCourse/modifyCourse',
+                            params = '?oldCourseID=' + courseID;
+                    formData.append('year', newYear);
+                    formData.append('term', newTerm);
+                    formData.append('courseName', newCourseName);
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('POST', url + params, true);
+                    xhr.onload = function (e) {
+                        if (this.status == 200) {
+                            if (/success/.test(this.response.toString())) {
+                                var newTermID = this.response.toString().split('&')[1];
+                                alert('修改成功!');
+                                url = '/home/showAndEdit/editCourse';
+                                params = '?termID=' + newTermID +
+                                '&courseID=' + courseID +
+                                '&year=' + newYear +
+                                '&whichTerm=' + newTerm +
+                                '&courseName=' + newCourseName;
+                                window.location.href = url + params;
+                            } else {
+                                alert(this.response);
+                                location.reload();
+                            }
+                        }
+                    };
+                    xhr.send(formData);
+                }
+            });
+
+    function delCourse() {
+        if (confirm("确认要删除该课程?")) {
+            var xhr = new XMLHttpRequest(),
+                    params = '?courseID=' + courseID,
+                    url = '/home/showAndEdit/editCourse/delCourse';
+            xhr.open('POST', url + params, true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    if (this.response == 'success') {
+                        alert('删除成功!');
+                        window.location.href = '/home/showAndEdit/showCourse';
+                    } else {
+                        alert('删除失败,请重试!');
+                    }
+                }
+            };
+            xhr.send();
+        }
+    }
+
+    function delStudent(button) {
+        if (confirm("确认要删除该学生?")) {
+            var xhr = new XMLHttpRequest(),
+                    studentID = button.value,
+                    params = '?courseID=' + courseID + '&studentID=' + studentID,
+                    url = '/home/showAndEdit/editCourse/delStudent';
+            xhr.open('POST', url + params, true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    if (this.response == 'success') {
+                        alert('删除成功!');
+                        location.reload();
+                    } else {
+                        alert('删除失败,请重试!');
+                    }
+                }
+            };
+            xhr.send();
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+
+    <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
+
+    <title><%= title %></title>
+</head>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    课程管理
+                    <small>查看和编辑</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div class="box box-primary box-lg">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <h4>
+                                课程列表
+                                <small>点击行以查看课程详细</small>
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="box-body table-responsive">
+                        <table id="courseList" class="table table-bordered table-hover">
+                            <thead>
+                            <tr>
+                                <th class="hidden">为termID占位</th>
+                                <th class="hidden">为courseID占位</th>
+                                <th>学年</th>
+                                <th>学期</th>
+                                <th>课程名</th>
+                                <th>学生人数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <% courses.forEach( function (course) { %>
+                            <tr>
+                                <td class="hidden"><%= course.A_termID %></td>
+                                <td class="hidden"><%= course.B_courseID %></td>
+                                <td><%= course.A_year %></td>
+                                <td><%= course.A_whichTerm %></td>
+                                <td><%= course.B_courseName %></td>
+                                <td><%= course.B_studentNum %></td>
+                            </tr>
+                            <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- jQuery plugin to validate form fields designed for Bootstrap -->
+<script src="/javascripts/bootstrapValidator.min.js"></script>
+
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/datatables.bootstrap3.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#courseList').dataTable({
+            "language": {"url": "/dataTables_language.json"}
+        });
+        $('#courseList tbody').on('click', 'tr', function () {
+            $(this).addClass('selected');
+            var row = table.$('tr.selected'),
+                    termID = row.children('td').eq(0).html(),
+                    courseID = row.children('td').eq(1).html(),
+                    year = row.children('td').eq(2).html(),
+                    whichTerm = row.children('td').eq(3).html(),
+                    courseName = row.children('td').eq(4).html(),
+                    url = '/home/showAndEdit/editCourse',
+                    params = '?termID=' + termID +
+                            '&courseID=' + courseID +
+                            '&year=' + year +
+                            '&whichTerm=' + whichTerm +
+                            '&courseName=' + courseName;
+            window.location.href = url + params;
+        });
+    });
+</script>
+
+</body>
+</html>

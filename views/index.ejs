@@ -27,7 +27,7 @@
                     </div>
                     <a class="signup-switch" href="#signup"><i class="fa fa-fw fa-hand-o-right"></i>注册账号</a>
                 </div>
-                <form class="form-sign" action="home" method="post" onsubmit="password.value=hex_sha1(password.value)">
+                <form class="form-sign" action="/home" method="post" onsubmit="password.value=hex_sha1(password.value)">
                     <div class="box-body">
                         <label for="inputID" class="sr-only">账号</label>
                         <input type="text" name="teacherID" class="form-control" placeholder="用户名" required>
@@ -53,12 +53,12 @@
                     </div>
                     <a class="signin-switch" href="#signin"><i class="fa fa-fw fa-hand-o-right"></i>登录系统</a>
                 </div>
-                <form class="form-sign" action="signup" method="post" onsubmit="password.value=hex_sha1(password.value)">
+                <form class="form-sign" action="/signup" method="post" onsubmit="password.value=hex_sha1(password.value)">
                     <div class="box-body">
                         <label for="inputName" class="sr-only">姓名</label>
                         <input type="text" name="teacherName" class="form-control" placeholder="姓名" required>
                         <label for="inputID" class="sr-only">账号</label>
-                        <input type="text" name="teacherID" class="form-control" placeholder="用户名" required>
+                        <input type="text" name="teacherID" class="form-control" placeholder="用户名" style="border-top-right-radius: 0;border-top-left-radius: 0;" required>
                         <label for="inputPassword" class="sr-only">密码</label>
                         <input type="password" name="password" class="form-control" placeholder="密码" required>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
@@ -88,8 +88,6 @@
 <script src="/javascripts/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/javascripts/bootstrap.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="/javascripts/ie10-viewport-bug-workaround.js"></script>
 <!-- Include sha1 JavaScript plugins -->
 <script src="/javascripts/sha1.js"></script>
 <script  type="text/javascript">

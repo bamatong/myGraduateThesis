@@ -12,7 +12,7 @@ router.post('/', function (req, res, next) {
     var obj = req.body;
     teacher.signin(obj.teacherID, obj.password, function (err, userinfo) {
         if (err) {
-            res.render('redirect', {message: err});
+            res.render('back2index', {message: err});
         } else {
             req.session.user = userinfo.teacherName;
             req.session.userID = userinfo.teacherID;
@@ -25,7 +25,7 @@ router.get('/', function (req, res, next) {
     if (req.session.user) {
         res.render('home', {title: '控制台', username: req.session.user});
     } else {
-        res.render('redirect', {message: '抱歉,你还没有登录.'});
+        res.render('back2index', {message: '抱歉,你还没有登录.'});
     }
 });
 

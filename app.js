@@ -13,6 +13,7 @@ var signin = require('./routes/signin');
 var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var addCourse = require('./routes/addCourse');
+var showAndEdit = require('./routes/showAndEdit');
 
 //创建项目实例
 var app = express();
@@ -45,6 +46,7 @@ app.use('/home', signin);
 app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/home/addCourse', addCourse);
+app.use('/home/showAndEdit', showAndEdit);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

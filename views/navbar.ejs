@@ -17,12 +17,11 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu">
-                        <li><a href="#" data-toggle="modal" data-target="#myModal">个人信息</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#userInfoModal">个人信息</a></li>
                         <li class="divider"></li>
                         <li><a href="/logout">退出</a></li>
                     </ul>
                 </li>
-                <li><a href="#">设置</a></li>
                 <li><a href="#">帮助</a></li>
             </ul>
             <form class="navbar-form navbar-right">
@@ -32,12 +31,12 @@
     </div>
 </nav>
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade myModal" id="userInfoModal" tabindex="-1" role="dialog" aria-labelledby="userInfo" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">个人信息</h4>
+                <h4 class="modal-title" id="userInfo">个人信息</h4>
             </div>
             <div class="modal-body">
                 用户名
