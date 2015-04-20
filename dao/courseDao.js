@@ -7,7 +7,6 @@ var course = {},
     pool = require('./mysqlPool'),
     async = require('async');
 
-
 course.connect = function (callback) {
     pool.getConnection(function (err, connection) {
         if (err)
@@ -48,7 +47,8 @@ course.addClass = function (teacherID, classInfo, callback) {
                                     'WHERE course.teacherID = teacher.teacherID ' +
                                     'AND course.courseID = class.courseID ' +
                                     'AND termID = ? ' +
-                                    'AND courseName = ?', [termID, courseName], function (err, result) {
+                                    'AND courseName = ? ' +
+                                    'AND teacher.teacherID = ?', [termID, courseName, teacherID], function (err, result) {
                                         if (err) {
                                             callback(errMsg);
                                         }
@@ -72,7 +72,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                         } else {
                                                             courseID = result.insertId;
                                                             //console.log(termID, courseID, studentNum);
-                                                            async.each(student, function (item, callback) {
+                                                            async.eachSeries(student, function (item, callback) {
                                                                 connection.query('SELECT * from student where studentID = ?', [item[0]],
                                                                     function (err, result) {
                                                                         if (err) {
@@ -82,6 +82,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                                         } else {
                                                                             if (result.length) {
                                                                                 //console.log('学生' + item[0] + '已存在');
+                                                                                sqlStr += 'UPDATE student SET studentName = ' + connection.escape(item[1]) + ' WHERE studentID =' + connection.escape(item[0]) + ';';
                                                                                 sqlStr += 'INSERT INTO class(termID, courseID, studentID) VALUES (' +
                                                                                 termID + ',' + courseID + ',' + connection.escape(item[0]) + ');';
                                                                                 callback();
@@ -112,7 +113,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                                                         callback(errMsg);
                                                                                     });
                                                                                 }
-                                                                                console.log('success!');
+                                                                                //console.log('success!');
                                                                                 callback();
                                                                             });
                                                                         }
@@ -156,7 +157,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                     } else {
                                                         courseID = result.insertId;
                                                         //console.log(termID, courseID, studentNum);
-                                                        async.each(student, function (item, callback) {
+                                                        async.eachSeries(student, function (item, callback) {
                                                             connection.query('SELECT * from student where studentID = ?', [item[0]],
                                                                 function (err, result) {
                                                                     if (err) {
@@ -166,6 +167,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                                     } else {
                                                                         if (result.length) {
                                                                             //console.log('学生' + item[0] + '已存在');
+                                                                            sqlStr += 'UPDATE student SET studentName = ' + connection.escape(item[1]) + ' WHERE studentID =' + connection.escape(item[0]) + ';';
                                                                             sqlStr += 'INSERT INTO class(termID, courseID, studentID) VALUES (' +
                                                                             termID + ',' + courseID + ',' + connection.escape(item[0]) + ');';
                                                                             callback();
@@ -196,7 +198,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                                                     callback(errMsg);
                                                                                 });
                                                                             }
-                                                                            console.log('success!');
+                                                                            //console.log('success!');
                                                                             callback();
                                                                         });
                                                                     }
@@ -230,7 +232,8 @@ course.showCourse = function (teacherID, callback) {
         "AND B.teacherID = ?" +
         ") " +
         "INNER JOIN class D ON D.courseID = B.courseID" +
-        ") ON A.termID = D.termID";
+        ") ON A.termID = D.termID " +
+        "ORDER BY year, whichTerm";
     this.connect(function (err, connection) {
         if (err) {
             callback(err, null);
@@ -247,19 +250,18 @@ course.showCourse = function (teacherID, callback) {
     });
 };
 
-course.showStudent = function (termID, courseID, callback) {
+course.showStudent = function (courseID, callback) {
     var sqlStr = "SELECT " +
-        "student.studentID, student.studentName " +
+        "student.studentID, student.studentName, student.IMEI " +
         "FROM " +
         "class " +
         "INNER JOIN student ON class.studentID = student.studentID " +
-        "AND class.termID = ? " +
         "AND class.courseID= ?";
     this.connect(function (err, connection) {
         if (err) {
             callback(err, null);
         } else {
-            connection.query({sql: sqlStr, nestTables: '_'}, [termID, courseID], function (err, result) {
+            connection.query({sql: sqlStr, nestTables: '_'}, [courseID], function (err, result) {
                 if (err) {
                     callback(err, null);
                 } else {
@@ -490,7 +492,7 @@ course.addStudent = function (termID, courseID, studentID, studentName, callback
                 } else {
                     async.series([
                         function (callback) {
-                            connection.query('SELECT * from student where studentID = ?', [studentID],
+                            connection.query('SELECT studentName from student where studentID = ?', [studentID],
                                 function (err, result) {
                                     if (err) {
                                         connection.rollback(function () {
@@ -499,22 +501,24 @@ course.addStudent = function (termID, courseID, studentID, studentName, callback
                                     } else {
                                         if (result.length) {
                                             console.log('旧学生');
-                                            connection.query(
-                                                'SELECT * FROM class ' +
-                                                'WHERE termID = ? AND courseID = ? AND studentID = ?',
-                                                [termID, courseID, studentID],
-                                                function (err, result) {
-                                                    if (err) {
-                                                        connection.rollback(function () {
-                                                            callback(errMsg);
-                                                        });
-                                                    } else {
-                                                        if (result.length) {
-                                                            callback('学号为'+studentID+'的学生已在学生名单中');
-                                                        } else
-                                                            callback();
-                                                    }
-                                                });
+                                            if (result[0].studentName != studentName) callback('学号为' + studentID + '的姓名不是' + studentName);
+                                            else
+                                                connection.query(
+                                                    'SELECT * FROM class ' +
+                                                    'WHERE termID = ? AND courseID = ? AND studentID = ?',
+                                                    [termID, courseID, studentID],
+                                                    function (err, result) {
+                                                        if (err) {
+                                                            connection.rollback(function () {
+                                                                callback(errMsg);
+                                                            });
+                                                        } else {
+                                                            if (result.length) {
+                                                                callback('学号为' + studentID + '的学生已在学生名单中');
+                                                            } else
+                                                                callback();
+                                                        }
+                                                    });
                                         } else {
                                             console.log('新学生');
                                             connection.query(

@@ -17,7 +17,7 @@ router.post('/', function (req, res, next) {
                 var line = data.toString().split(/\n|\r\n/);
                 var student = [];
                 line.forEach(function (value) {
-                    if (value) student.push(value.split(/[\t|\s]/));  //删除空行
+                    if (value) student.push(value);  //删除空行
                 });
                 classInfo[fieldname] = student;
             });
@@ -45,7 +45,7 @@ router.post('/', function (req, res, next) {
 
 router.get('/', function (req, res, next) {
     if (req.session.user) {
-        res.render('addCourse', {title: '添加课程', username: req.session.user});
+        res.render('addCourse', {title: '添加课程', username: req.session.user, leaveNum: req.session.leaveNum});
     } else {
         res.render('back2index', {message: '抱歉,你还没有登录.'});
     }

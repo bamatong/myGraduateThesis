@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
         } else {
             req.session.user = obj.teacherName;
             req.session.userID = obj.teacherID;
-            res.render('home', {title: '控制台', username: obj.teacherName});
+            res.render('home', {title: '控制台', username: obj.teacherName, leaveNum: req.session.leaveNum});
         }
     });
 });

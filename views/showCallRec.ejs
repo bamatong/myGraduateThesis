@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <!-- 表格 -->
+    <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
+
+    <title><%= title %></title>
+</head>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    考勤管理
+                    <small>查看考勤</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div class="box box-primary box-med">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <h4>
+                                按课程查看考勤
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="form-group form-inline">
+                            <select class="form-control" onchange="getCallRec(this)" name="courses">
+                                <option value="">请选择课程</option>
+                                <% courses.forEach( function (course) { %>
+                                <option value="<%= course.courseID %>&<%= course.courseName %>"><%= course.course %></option>
+                                <% }); %>
+                            </select>
+                            <span class="text-blue glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="选择课程会列出考勤记录和数据"></span>
+                        </div>
+                        <div class="nav-tabs-custom">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist" id="tab1">
+                                <li role="presentation" class="active">
+                                    <a href="#callRecListTab" role="tab" data-toggle="tab">表格</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#callRecGraph" role="tab" data-toggle="tab">统计图</a>
+                                </li>
+                                <li role="presentation">
+                                    <a href="#callRecStudent" role="tab" data-toggle="tab">学生统计</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane fade in active" id="callRecListTab">
+                                    <div id="callRecList"></div>
+                                    <div class="none text-center" id="description">
+                                        <span class="text-blue glyphicon glyphicon-info-sign"></span>
+                                        <span class="text-blue">点击行显示详细信息</span>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="callRecGraph">
+                                </div>
+                                <div role="tabpanel" class="tab-pane fade" id="callRecStudent">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<div class="modal fade" id="callRecDetail" tabindex="-1" role="dialog" aria-labelledby="userInfo" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="userInfo">考勤详细信息</h4>
+            </div>
+            <div class="modal-body">
+                <div class="nav-tabs-custom">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist" id="tab2">
+                        <li role="presentation" class="active">
+                            <a href="#callRecDetailData" role="tab" data-toggle="tab">数据</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#callRecDetailGraph" role="tab" data-toggle="tab">图表</a>
+                        </li>
+                    </ul>
+                    <div class="callout callout-info">
+                        <h4>本次点名统计</h4>
+
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-6 text-blue">参加点名人数: <span id="attendNum"></span></div>
+                                <div class="col-md-6 text-blue">出席人数: <span id="attendance"></span></div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 text-blue">旷课人数: <span id="absence"></span></div>
+                                <div class="col-md-6 text-blue">请假人数: <span id="leave"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="callRecDetailData">
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="callRecDetailGraph">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="modify()">修改</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- 表格 -->
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/datatables.bootstrap3.js"></script>
+<!-- highcharts -->
+<script src="/javascripts/highcharts.js"></script>
+<script src="/javascripts/exporting.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+
+<script type="text/javascript">
+    var leaveNum = '<%= leaveNum %>';
+    if(leaveNum != '0') $('#leaveAlert').show();
+    $("[data-toggle='tooltip']").tooltip();
+    var g_courseID, g_callDateID;
+    //获取考勤记录
+    function getCallRec(select) {
+        var index = select.options.selectedIndex, courseID, courseName, callRecs, studentCallRecs, chartData = [];
+        var htmlTable1 = "<table id='callRecs' class='table table-bordered table-hover'></table>";
+        var htmlTable2 =
+                "<table id='studentCallRecs' class='table table-bordered table-hover'><thead>" +
+                "<tr><th rowspan='2'>学号</th><th rowspan='2'>姓名</th><th colspan='4'>考勤统计(/次)</th></tr>" +
+                "<tr><th>参加</th><th>正常</th><th>旷课</th><th>请假</th></tr></thead>" +
+                "</table>";
+        var htmlChart = "<div id='highcharts' class='highcharts'></div>";
+        var table1, table2;
+        if (index != 0) {
+            $('#callRecs').remove();
+            $('#description').hide();
+            $('#highcharts').remove();
+            $('#studentCallRecs').remove();
+            courseID = select.options[index].value.split('&')[0];
+            g_courseID = courseID;
+            courseName = select.options[index].value.split('&')[1];
+            var xhr = new XMLHttpRequest(),
+                    params = '?courseID=' + courseID,
+                    url = '/home/showCallRec/getCallRec';
+            xhr.open('POST', url + params, true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    if (this.response != 'fail') {
+                        callRecs = JSON.parse(this.response)[0];
+                        studentCallRecs = JSON.parse(this.response)[1];
+                        if (callRecs.length) {
+                            //table1
+                            $('#description').show();
+                            $('#callRecList').html(htmlTable1);
+                            table1 = $('#callRecs').dataTable({
+                                "language": {"url": "/dataTables_language.json"},
+                                "data": callRecs,
+                                "columns": [
+                                    {"title": "ID"},
+                                    {"title": "时间"},
+                                    {"title": "到勤率"}
+                                ],
+                                "columnDefs": [{
+                                    "targets": 2,
+                                    "createdCell": function (td, cellData) {
+                                        switch (true) {
+                                            case (cellData >= 60 && cellData <= 80):
+                                                $(td).html("<span class='badge bg-light-blue'>" + cellData + "%</span>");
+                                                break;
+                                            case (cellData > 80 && cellData <= 100):
+                                                $(td).html("<span class='badge bg-green'>" + cellData + "%</span>");
+                                                break;
+                                            default :
+                                                $(td).html("<span class='badge bg-red'>" + cellData + "%</span>");
+                                                break;
+                                        }
+                                    }
+                                }]
+                            });
+                            $('#callRecs tbody').on('click', 'tr', function () {
+                                if ($(this).hasClass('selected')) {
+                                    $(this).removeClass('selected');
+                                } else {
+                                    table1.$('tr.selected').removeClass('selected');
+                                    $(this).addClass('selected');
+                                    var row = table1.$('tr.selected'),
+                                            callDateID = row.children('td').eq(0).html();
+                                    getCallRecDetail(callDateID, courseName);
+                                }
+                            });
+                            //chart
+                            $('#callRecGraph').html(htmlChart);
+                            var options = {
+                                chart: {
+                                    renderTo: 'highcharts',
+                                    type: 'spline'
+                                },
+                                title: {
+                                    text: '历次考勤数据',
+                                    x: 0
+                                },
+                                xAxis: {
+                                    type: 'datetime',
+                                    title: {
+                                        text: '日期'
+                                    },
+                                    dateTimeLabelFormats: {
+                                        day: '%Y/%b/%e'
+                                    }
+                                },
+                                yAxis: {
+                                    title: {
+                                        text: '到勤率(%)'
+                                    },
+                                    min: 0,
+                                    max: 100
+                                },
+                                credits: {
+                                    enabled: false
+                                },
+                                tooltip: {
+                                    headerFormat: '<b>{point.x:%A, %b月%e日, %Y}</b><br>',
+                                    pointFormat: '到勤率: {point.y}%'
+                                },
+                                legend: {
+                                    enabled: false
+                                },
+                                series: [{}]
+                            };
+                            callRecs.forEach(function (item) {
+                                var tmp = [], year, month, day;
+                                year = Number(item[1].slice(0, 4));
+                                month = Number(item[1].slice(5, 7)) - 1;
+                                day = Number(item[1].slice(8, 10));
+                                tmp.push(Date.UTC(year, month, day));
+                                tmp.push(item[2]);
+                                chartData.push(tmp);
+                            });
+                            options.series[0].name = courseName;
+                            options.series[0].data = chartData;
+                            $('#highcharts').highcharts(options);
+                            //table2
+                            $('#callRecStudent').html(htmlTable2);
+                            table2 = $('#studentCallRecs').dataTable({
+                                "language": {"url": "/dataTables_language.json"},
+                                "data": studentCallRecs,
+                                "columnDefs": [{
+                                    "targets": 4,
+                                    "createdCell": function (td, cellData) {
+                                        if (cellData >= 3) $(td).html("<span class='text-red'>" + cellData + "</span>");
+                                        else $(td).html(cellData);
+                                    }
+                                }]
+                            });
+                        } else {
+                            $('#description').hide();
+                            $('#callRecList').html("<p style='line-height: 50px; text-align: center;'>没有相应的数据</p>");
+                            $('#callRecGraph').html("<p style='line-height: 50px; text-align: center;'>没有相应的数据</p>");
+                            $('#callRecStudent').html("<p style='line-height: 50px; text-align: center;'>没有相应的数据</p>");
+                        }
+                    } else {
+                        alert('获取学生考勤信息失败,请重新选择!');
+                    }
+                } else {
+                    alert('服务器发生错误');
+                }
+            };
+            xhr.send();
+        }
+    }
+    //获取某次考勤详情
+    function getCallRecDetail(callDateID, courseName) {
+        g_callDateID = callDateID;
+        var callRecDetailData;
+        var attendNum, absence, attendance, leave, chartData = [];
+        var htmlTable = "<table id='detailData' class='table table-bordered table-hover'></table>";
+        var htmlChart = "<div id='detailGraph' class='highcharts'></div>";
+        $('#detailData').remove();
+        $('#detailGraph').remove();
+        var xhr = new XMLHttpRequest(),
+                params = '?callDateID=' + callDateID,
+                url = '/home/showCallRec/getCallRecDetail';
+        xhr.open('POST', url + params, true);
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                if (this.response != 'fail') {
+                    attendNum = JSON.parse(this.response).attendNum;
+                    absence = JSON.parse(this.response).absence;
+                    attendance = JSON.parse(this.response).attendance;
+                    leave = JSON.parse(this.response).leave;
+                    $('#attendNum').text(attendNum + '人');
+                    $('#attendance').text(attendance + '人 ' + (attendance / attendNum * 100).toFixed(2) + '%');
+                    $('#absence').text(absence + '人 ' + (absence / attendNum * 100).toFixed(2) + '%');
+                    $('#leave').text(leave + '人 ' + (leave / attendNum * 100).toFixed(2) + '%');
+                    //table
+                    callRecDetailData = JSON.parse(this.response).students;
+                    $('#callRecDetailData').html(htmlTable);
+                    $('#detailData').dataTable({
+                        "language": {"url": "/dataTables_language.json"},
+                        "data": callRecDetailData,
+                        "columns": [
+                            {"title": "学号"},
+                            {"title": "姓名"},
+                            {"title": "出勤情况"}
+                        ],
+                        "columnDefs": [{
+                            "targets": 2,
+                            "createdCell": function (td, cellData) {
+                                switch (cellData) {
+                                    case 1:
+                                        $(td).html("<span class='badge bg-green'>正常</span>");
+                                        break;
+                                    case 2:
+                                        $(td).html("<span class='badge bg-red'>旷课</span>");
+                                        break;
+                                    default :
+                                        $(td).html("<span class='badge bg-light-blue'>请假</span>");
+                                        break;
+                                }
+                            }
+                        }]
+                    });
+                    //chart
+                    $('#callRecDetailGraph').html(htmlChart);
+                    var options = {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false
+                        },
+                        title: {
+                            text: '本次点名情况图例'
+                        },
+                        tooltip: {
+                            headerFormat: '<b>{series.name}</b><br>',
+                            pointFormat: '{point.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: true,
+                                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                    style: {
+                                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                    }
+                                }
+                            }
+                        },
+                        series: [{
+                            type: 'pie'
+                        }]
+                    };
+                    chartData.push(['正常', attendance / attendNum * 100]);
+                    chartData.push(['旷课', absence / attendNum * 100]);
+                    chartData.push(['请假', leave / attendNum * 100]);
+                    options.series[0].name = courseName;
+                    options.series[0].data = chartData;
+                    $('#detailGraph').highcharts(options);
+                    $('#callRecDetail').modal();
+                } else {
+                    alert('获取考勤记录详细信息失败,请重新选择!');
+                }
+            } else {
+                alert('服务器发生错误');
+            }
+        };
+        xhr.send();
+    }
+    function modify() {
+        var url = '/home/editCallRec',
+                params = '?courseID=' + g_courseID +
+                        '&callDateID=' + g_callDateID;
+        window.location.href = url + params;
+    }
+</script>
+</body>
+</html>

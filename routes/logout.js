@@ -10,11 +10,9 @@ router.get('/', function (req, res, next) {
     if (req.session.user) {
         req.session.destroy(function (err) {
             if (err) {
-                console.log('session销毁失败');
                 res.render('back2home', {message: '抱歉,退出失败.'});
             }
             else {
-                console.log('session被销毁');
                 res.render('back2index', {message: '你已经安全退出.'});
             }
         });

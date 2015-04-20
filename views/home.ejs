@@ -6,7 +6,71 @@
     <div class="row">
         <% include sidebar.ejs %>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    首页
+                    <small>功能介绍</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!-- small box -->
+                        <div class="small-box bg-aqua">
+                            <div class="inner">
+                                <h3>1</h3>
 
+                                <p>课程管理</p>
+                            </div>
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-book"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small-box bg-yellow">
+                            <div class="inner">
+                                <h3>2</h3>
+
+                                <p>考勤管理</p>
+                            </div>
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-list-alt"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="small-box bg-green">
+                            <div class="inner">
+                                <h3>3</h3>
+
+                                <p>消息推送</p>
+                            </div>
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-send"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="small-box bg-red">
+                            <div class="inner">
+                                <h3>4</h3>
+
+                                <p>其他</p>
+                            </div>
+                            <div class="icon">
+                                <i class="glyphicon glyphicon-wrench"></i>
+                            </div>
+                            <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
     <div class="row">
@@ -18,5 +82,11 @@
 <script src="/javascripts/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/javascripts/bootstrap.min.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+<script type="text/javascript">
+    var leaveNum = '<%= leaveNum %>';
+    if(leaveNum != '0') $('#leaveAlert').show();
+</script>
 </body>
 </html>

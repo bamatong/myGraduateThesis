@@ -14,6 +14,13 @@ var logout = require('./routes/logout');
 var signup = require('./routes/signup');
 var addCourse = require('./routes/addCourse');
 var showAndEdit = require('./routes/showAndEdit');
+var noticePush = require('./routes/noticePush');
+var showCallRec = require('./routes/showCallRec');
+var editCallRec = require('./routes/editCallRec');
+var students = require('./routes/students');
+var teachers = require('./routes/teachers');
+var leave = require('./routes/askForLeave');
+var unbind = require('./routes/unbind');
 
 //创建项目实例
 var app = express();
@@ -24,7 +31,7 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/images/logo.ico'));
 
 //定义日志
 app.use(logger.log4js.connectLogger(logger.logger('normal'), {format: ':method :url :status :response-time ms'}));
@@ -47,12 +54,21 @@ app.use('/logout', logout);
 app.use('/signup', signup);
 app.use('/home/addCourse', addCourse);
 app.use('/home/showAndEdit', showAndEdit);
+app.use('/home/noticePush', noticePush);
+app.use('/home/showCallRec', showCallRec);
+app.use('/home/editCallRec', editCallRec);
+app.use('/home/askForLeave', leave);
+app.use('/home/unbind', unbind);
+
+//匹配手机路径和路由
+app.use('/students', students);
+app.use('/teachers', teachers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
-  next(err);
+  res.render('404');
 });
 
 // error handlers
@@ -62,8 +78,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
   app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
+    res.render('500', {
       error: err
     });
   });
@@ -73,8 +88,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
+  res.render('500', {
     error: {}
   });
 });

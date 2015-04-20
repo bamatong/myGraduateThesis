@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
+    <title><%= title %></title>
+</head>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    请假申请
+                </h4>
+            </section>
+            <section class="content">
+                <div class="box box-primary">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <h4>
+                                请假情况列表
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="nav-tabs-custom">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist" id="tab">
+                                <li class="active">
+                                    <a href="#unhandled" role="tab" data-toggle="tab">未处理</a>
+                                </li>
+                                <li>
+                                    <a href="#handled" role="tab" data-toggle="tab">已处理</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="unhandled">
+                                    <div class="form-group" id="utilBtn">
+                                        <div class="btn-group" role="group">
+                                            <button type="button" class="btn btn-default" onclick="selectAll()">全选
+                                            </button>
+                                            <button type="button" class="btn btn-default" onclick="inverse()">反选
+                                            </button>
+                                        </div>
+                                        已选择 <b id="selectedNum" class="text-blue">0</b> 人
+                                        <span class="text-blue glyphicon glyphicon-info-sign" data-toggle="tooltip"
+                                              data-placement="right" title="点击表格行来选择"></span>
+
+                                        <div class="pull-right">
+                                            <button type="button" class="btn btn-success" onclick="agree()">批准请假
+                                            </button>
+                                            <button type="button" class="btn btn-danger" onclick="disagree()">拒绝请假
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table id="unhandledLeaveList" class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th class="hidden">leaveID</th>
+                                                <th>课程</th>
+                                                <th>学号</th>
+                                                <th>姓名</th>
+                                                <th>请假理由</th>
+                                                <th>请假日期</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% unhandledLeaves.forEach( function (unhandledLeave) { %>
+                                            <tr>
+                                                <td class="hidden"><%= unhandledLeave.B_leaveID %></td>
+                                                <td><%= unhandledLeave.course %></td>
+                                                <td><%= unhandledLeave.A_studentID %></td>
+                                                <td><%= unhandledLeave.A_studentName %></td>
+                                                <td><%= unhandledLeave.B_reason %></td>
+                                                <td><%= unhandledLeave.B_leaveDate %></td>
+                                            </tr>
+                                            <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="handled">
+                                    <div class="table-responsive">
+                                        <table id="handledLeaveList" class="table table-bordered table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th class="hidden">leaveID</th>
+                                                <th>课程</th>
+                                                <th>学号</th>
+                                                <th>姓名</th>
+                                                <th>请假理由</th>
+                                                <th>请假日期</th>
+                                                <th>状态</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <% handledLeaves.forEach( function (handledLeave) { %>
+                                            <tr>
+                                                <td class="hidden"><%= handledLeave.B_leaveID %></td>
+                                                <td><%= handledLeave.course %></td>
+                                                <td><%= handledLeave.A_studentID %></td>
+                                                <td><%= handledLeave.A_studentName %></td>
+                                                <td><%= handledLeave.B_reason %></td>
+                                                <td><%= handledLeave.B_leaveDate %></td>
+                                                <td><%= handledLeave.B_status %></td>
+                                            </tr>
+                                            <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- 表格 -->
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/datatables.bootstrap3.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+<script type="text/javascript">
+    var leaveNum = '<%= leaveNum %>';
+    if (leaveNum != '0') $('#leaveAlert').show();
+    $("[data-toggle='tooltip']").tooltip();
+    var table = $('#unhandledLeaveList').dataTable({
+        "language": {"url": "/dataTables_language.json"}
+    });
+    $('#unhandledLeaveList tbody').on('click', 'tr', function () {
+        if (!$(this).children('td').hasClass('dataTables_empty')) {
+            var num = Number($('#selectedNum').text());
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+                num -= 1;
+                $('#selectedNum').text(num);
+            } else {
+                $(this).addClass('selected');
+                num += 1;
+                $('#selectedNum').text(num);
+            }
+        }
+    });
+    $('#handledLeaveList').dataTable({
+        "language": {"url": "/dataTables_language.json"},
+        "columnDefs": [{
+            "targets": 6,
+            "createdCell": function (td, cellData) {
+                switch (cellData) {
+                    case '2':
+                        $(td).html("<span class='text-green'>已批准</span>");
+                        break;
+                    case '3':
+                        $(td).html("<span class='text-red'>已拒绝</span>");
+                        break;
+                    default :
+                        alert('error');
+                        break;
+                }
+            }
+        }]
+    });
+    function selectAll() {
+        table.$('tr').each(function () {
+            if (!$('this').hasClass('selected'))
+                $(this).addClass('selected');
+        });
+        $('#selectedNum').text(table.$('.selected').length);
+    }
+    function inverse() {
+        var rows = table.$('tr');
+        rows.each(function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                $(this).addClass('selected');
+            }
+        });
+        $('#selectedNum').text(table.$('.selected').length);
+    }
+    function agree() {
+        var rows = table.$('tr.selected');
+        if (rows.length == 0) {
+            alert('请先选择请假申请');
+        } else {
+            if (confirm("确认要批准选中的请假申请?")) {
+                var leaveIDs = [], studentIDs = [], leaveCourses = [], leaveDates = [];
+                rows.each(function () {
+                    leaveIDs.push($(this).children('td').eq(0).html());
+                    studentIDs.push($(this).children('td').eq(2).html());
+                    leaveCourses.push($(this).children('td').eq(1).html());
+                    leaveDates.push($(this).children('td').eq(5).html());
+                });
+                var formData = new FormData();
+                formData.append('leaveIDs', leaveIDs);
+                formData.append('studentIDs', studentIDs);
+                formData.append('leaveCourses', leaveCourses);
+                formData.append('leaveDates', leaveDates);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/home/askForLeave/agree', true);
+                xhr.onload = function (e) {
+                    if (this.status == 200) {
+                        if (this.response == 'success') {
+                            alert('操作成功!');
+                            location.reload();
+                        } else {
+                            alert(this.response.toString());
+                            location.reload();
+                        }
+                    } else {
+                        alert('服务器发生错误');
+                    }
+                };
+                xhr.send(formData);
+            }
+        }
+    }
+    function disagree() {
+        var rows = table.$('tr.selected');
+        if (rows.length == 0) {
+            alert('请先选择请假申请');
+        } else {
+            if (confirm("确认要拒绝选中的请假申请?")) {
+                var leaveIDs = [], studentIDs = [], leaveCourses = [], leaveDates = [];
+                rows.each(function () {
+                    leaveIDs.push($(this).children('td').eq(0).html());
+                    studentIDs.push($(this).children('td').eq(2).html());
+                    leaveCourses.push($(this).children('td').eq(1).html());
+                    leaveDates.push($(this).children('td').eq(5).html());
+                });
+                var formData = new FormData();
+                formData.append('leaveIDs', leaveIDs);
+                formData.append('studentIDs', studentIDs);
+                formData.append('leaveCourses', leaveCourses);
+                formData.append('leaveDates', leaveDates);
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/home/askForLeave/disagree', true);
+                xhr.onload = function (e) {
+                    if (this.status == 200) {
+                        if (this.response == 'success') {
+                            alert('操作成功!');
+                            location.reload();
+                        } else {
+                            alert(this.response.toString());
+                            location.reload();
+                        }
+                    } else {
+                        alert('服务器发生错误');
+                    }
+                };
+                xhr.send(formData);
+            }
+        }
+    }
+</script>
+</body>
+</html>

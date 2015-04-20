@@ -14,7 +14,12 @@ router.get('/showCourse', function (req, res, next) {
             if (err) {
                 res.render('back2home', {message: '查看课程失败.'});
             } else {
-                res.render('showCourse', {title: '查看课程', username: req.session.user, courses: result});
+                res.render('showCourse', {
+                    title: '查看课程',
+                    username: req.session.user,
+                    courses: result,
+                    leaveNum: req.session.leaveNum
+                });
             }
         });
     } else {
@@ -32,7 +37,7 @@ router.get('/editCourse', function (req, res, next) {
                 year = req.query.year,
                 whichTerm = req.query.whichTerm,
                 courseName = req.query.courseName;
-            course.showStudent(termID, courseID, function (err, result) {
+            course.showStudent(courseID, function (err, result) {
                 if (err) {
                     res.render('back2home', {message: '查看课程详细信息失败.'});
                 } else {
@@ -45,7 +50,8 @@ router.get('/editCourse', function (req, res, next) {
                             courseID: courseID,
                             year: year,
                             whichTerm: whichTerm,
-                            courseName: courseName
+                            courseName: courseName,
+                            leaveNum: req.session.leaveNum
                         }
                     );
                 }
@@ -59,7 +65,7 @@ router.get('/editCourse', function (req, res, next) {
 router.post('/editCourse/delCourse', function (req, res, next) {
     if (req.session.user) {
         if (!req.query.courseID) {
-            res.red('没有选择课程');
+            res.end('没有选择课程');
         } else {
             var courseID = req.query.courseID;
             course.delCourse(courseID, function (err) {
@@ -78,7 +84,7 @@ router.post('/editCourse/delCourse', function (req, res, next) {
 router.post('/editCourse/modifyCourse', function (req, res, next) {
     if (req.session.user) {
         if (!req.query) {
-            res.red('没有选择课程');
+            res.end('没有选择课程');
         } else {
             var courseInfo = {}, oldCourseID = req.query.oldCourseID;
             var busboy = new Busboy({headers: req.headers});
@@ -86,13 +92,12 @@ router.post('/editCourse/modifyCourse', function (req, res, next) {
                 courseInfo[fieldname] = val;
             });
             busboy.on('finish', function () {
-                //console.log(courseInfo);
                 course.modifyCourse(oldCourseID, courseInfo, function (err, itemID) {
-                    if(err) {
+                    if (err) {
                         res.end(err);
                     }
                     else {
-                        res.end('success&'+itemID);
+                        res.end('success&' + itemID);
                     }
                 });
             });
@@ -106,7 +111,7 @@ router.post('/editCourse/modifyCourse', function (req, res, next) {
 router.post('/editCourse/delStudent', function (req, res, next) {
     if (req.session.user) {
         if (!req.query) {
-            res.red('没有选择课程');
+            res.end('没有选择课程');
         } else {
             var courseID = req.query.courseID,
                 studentID = req.query.studentID;
@@ -126,7 +131,7 @@ router.post('/editCourse/delStudent', function (req, res, next) {
 router.post('/editCourse/addStudent', function (req, res, next) {
     if (req.session.user) {
         if (!req.query) {
-            res.red('没有选择课程');
+            res.end('没有选择课程');
         } else {
             var termID = req.query.termID,
                 courseID = req.query.courseID,

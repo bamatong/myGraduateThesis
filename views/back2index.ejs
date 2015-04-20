@@ -8,23 +8,24 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
 </head>
-<body>
-<div class="jumbotron">
-    <div class="container" style="text-align: center">
-        <h1><%= message %></h1>
-        <p>
-            <button class="btn btn-primary btn-lg" disabled="disabled" id="redirect" role="button">3s后回到主页</button>
-        </p>
-    </div>
+<body style="background-color: #eee;">
+<div class="jumbotron"
+     style="width: 50%;height: 50%;text-align: center;margin: auto;position: absolute;top: 0; left: 0; bottom: 0; right: 0;">
+    <h1><%= message %></h1>
+
+    <p>
+        <button class="btn btn-primary btn-lg" disabled="disabled" id="redirect" role="button">3s后回到主页</button>
+    </p>
 </div>
 <script type="text/javascript">
     var second = 3;
+//    var second = 1; //debug quickly
     var timer;
     function countDown() {
         second--;
         if (second > -1) {
             document.getElementById("redirect").innerHTML = second + 's后回到主页';
-            timer = setTimeout('countDown()', 1000);//调用自身实现
+            timer = setTimeout('countDown()', 1000);
         }
         else {
             clearTimeout(timer);

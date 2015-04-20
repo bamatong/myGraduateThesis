@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+</head>
+<body>
+<div class="error-page">
+    <h2 class="headline text-yellow"> 404</h2>
+
+    <div class="error-content">
+        <h3><i class="fa fa-warning text-yellow"></i> 很抱歉,您要访问的页面不存在!</h3>
+
+        <p class="lead">
+            请检查访问的网址是否正确.
+        </p>
+        <p>
+            <button class="btn btn-warning btn-lg" disabled="disabled" id="redirect" role="button">5s后回到主页</button>
+        </p>
+    </div>
+    <!-- /.error-content -->
+</div>
+<!-- /.error-page -->
+<script type="text/javascript">
+    var second = 5;
+    var timer;
+    function countDown() {
+        second--;
+        if (second > -1) {
+            document.getElementById("redirect").innerHTML = second + 's后回到主页';
+            timer = setTimeout('countDown()', 1000);
+        }
+        else {
+            clearTimeout(timer);
+            window.location.href = '/'
+        }
+    }
+    timer = setTimeout('countDown()', 1000);
+</script>
+</body>
+</html>

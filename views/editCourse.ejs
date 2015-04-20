@@ -35,7 +35,7 @@
                 <div class="box box-primary box-lg">
                     <div class="box-header">
                         <div class="box-title">
-                            课程详细信息
+                            <h4>课程详细信息</h4>
                         </div>
                     </div>
                     <div class="box-body">
@@ -57,6 +57,7 @@
                                     <option value="上">上</option>
                                     <option value="下">下</option>
                                 </select>
+
                                 <div class="form-group">
                                     <label for="inputCourseName">课程名</label>
                                     <input type="text" class="form-control" id="inputCourseName" name="courseName">
@@ -106,7 +107,7 @@
     </div>
 </div>
 <!-- studentInfo Modal -->
-<div class="modal fade myModal" id="studentInfo" tabindex="-1" role="dialog" aria-labelledby="studentInfo"
+<div class="modal fade" id="studentInfo" tabindex="-1" role="dialog" aria-labelledby="studentInfo"
      aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -116,7 +117,7 @@
                 <h4 class="modal-title" id="userInfo">学生信息</h4>
             </div>
             <div class="modal-body">
-                <form id="form-studentInfo">
+                <form id="form-studentInfo" class="normal-form">
                     <div class="form-group">
                         <label for="studentID" class="sr-only">学号</label>
                         <input type="text" name="studentID" id="studentID" class="form-control" placeholder="学号">
@@ -140,11 +141,14 @@
 <script src="/javascripts/bootstrap.min.js"></script>
 <!-- jQuery plugin to validate form fields designed for Bootstrap -->
 <script src="/javascripts/bootstrapValidator.min.js"></script>
-
+<!-- 表格 -->
 <script src="/javascripts/jquery.dataTables.min.js"></script>
 <script src="/javascripts/datatables.bootstrap3.js"></script>
-
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
 <script type="text/javascript">
+    var leaveNum = '<%= leaveNum %>';
+    if(leaveNum != '0') $('#leaveAlert').show();
     var termID = '<%= termID %>',
             courseID = '<%= courseID %>',
             year = '<%= year %>',
@@ -203,6 +207,8 @@
                         } else {
                             alert(this.response.toString());
                         }
+                    } else {
+                        alert('服务器发生错误');
                     }
                 };
                 xhr.send();
@@ -261,6 +267,8 @@
                                 alert(this.response);
                                 location.reload();
                             }
+                        } else {
+                            alert('服务器发生错误');
                         }
                     };
                     xhr.send(formData);
@@ -281,6 +289,8 @@
                     } else {
                         alert('删除失败,请重试!');
                     }
+                } else {
+                    alert('服务器发生错误');
                 }
             };
             xhr.send();
@@ -302,6 +312,8 @@
                     } else {
                         alert('删除失败,请重试!');
                     }
+                } else {
+                    alert('服务器发生错误');
                 }
             };
             xhr.send();

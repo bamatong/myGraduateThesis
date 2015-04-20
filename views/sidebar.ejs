@@ -2,19 +2,32 @@
     <ul class="nav nav-sidebar">
         <li class="active"><a><i class="fa fa-lg fa-book"></i> 课程管理</a>
         </li>
-        <li><a href="/home/addCourse">添加课程</a></li>
-        <li><a href="/home/showAndEdit/showCourse">查看和编辑</a></li>
+        <li><a href="/home/addCourse"><span>添加课程</span></a></li>
+        <li><a href="/home/showAndEdit/showCourse"><span>查看和编辑</span></a></li>
     </ul>
     <ul class="nav nav-sidebar">
         <li class="active"><a><i class="fa fa-lg fa-list-alt"></i> 考勤管理</a>
-        <li><a href="">查看考勤情况</a></li>
-        <li><a href="">编辑考勤信息</a></li>
+        <li><a href="/home/showCallRec"><span>查看考勤情况</span></a></li>
+        <li><a href="/home/editCallRec"><span>编辑考勤信息</span></a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li class="active"><a><i class="fa fa-lg fa-location-arrow"></i> 推送管理</a>
-        <li><a href="">编辑推送</a></li>
+        <li class="active"><a><i class="fa fa-lg fa-send"></i> 消息推送</a>
+        <li><a href="/home/noticePush"><span>编辑推送</span></a></li>
     </ul>
     <ul class="nav nav-sidebar">
-        <li class="active"><a href="#"><i class="fa fa-lg fa-qrcode"></i> 二维码签到</a>
+        <li class="active">
+            <a><i class="fa fa-lg fa-gear"></i> 其他</a>
+        <li>
+            <a href="/home/unbind">
+                <span>解绑手机</span>
+            </a>
+        </li>
+        <li>
+            <a href="/home/askForLeave">
+                <span>请假申请</span>
+                <span id="leaveAlert" class='label pull-right none' style="background-color: #dd4b39;margin-top: 1px;"><%= leaveNum %>
+                    </span>
+            </a>
+        </li>
     </ul>
 </div>

@@ -4,7 +4,7 @@
   "info": "第 _PAGE_ 页 ( 总共 _PAGES_ 页 )",
   "infoEmpty": "无记录",
   "infoFiltered": "(从 _MAX_ 条记录过滤)",
-  "emptyTable": "No data available in table",
+  "emptyTable": "暂无数据",
   "loadingRecords": "载入中...",
   "processing": "处理中...",
   "search": "搜索:",

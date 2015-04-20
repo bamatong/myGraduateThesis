@@ -1,0 +1,233 @@
+<% include header.ejs %>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    解绑手机
+                </h4>
+            </section>
+            <section class="content">
+                <div class="box box-primary box-med">
+                    <div class="box-header">
+                        <div class="box-title">
+                            <h4>
+                                请选择操作方式
+                            </h4>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="nav-tabs-custom">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs" role="tablist" id="tab">
+                                <li class="active">
+                                    <a href="#single" role="tab" data-toggle="tab">单个</a>
+                                </li>
+                                <li>
+                                    <a href="#batch" role="tab" data-toggle="tab">批量</a>
+                                </li>
+                            </ul>
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+                                <div role="tabpanel" class="tab-pane active" id="single">
+                                    <div class="input-group col-xs-8" style="margin: 0 auto 10px auto;">
+                                        <label for="inputStudentID" class="sr-only">学号</label>
+                                        <input type="text" class="form-control" id="inputStudentID"
+                                               placeholder="输入学生学号">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-flat" id="getStudentInfo"
+                                                    onclick="getStudentInfo()">搜索
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div class="table-responsive" id="singleRst">
+                                    </div>
+                                </div>
+                                <div role="tabpanel" class="tab-pane" id="batch">
+                                    <button class="btn btn-default"
+                                            onclick="$('input[id=inputFile]').click();">
+                                        <i class="fa fa-file-text"></i>
+                                        导入学生名单
+                                    </button>
+                                    <input type="file" id="inputFile" name="student" style="display: none">
+                                    <span id="file"></span>
+
+                                    <p class="help-block">支持Excel文件和txt格式文件,编码格式为:"utf-8",数据为一列,内容学生学号.</p>
+
+                                    <div class="table-responsive" id="batchRst">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+<script type="text/javascript">
+    var leaveNum = '<%= leaveNum %>';
+    if (leaveNum != '0') $('#leaveAlert').show();
+    //鉴定回车
+    $(document).keyup(function (e) {
+        var curKey = e.which;
+        if (curKey == 13) {
+            $('#getStudentInfo').click();
+        }
+    });
+    $('input[id=inputFile]').change(function () {
+        if (!/\.txt|\.xlsx|\.xls/.test($(this).val())) {
+            alert('文件类型不符合');
+        } else {
+            $('#file').text($(this).val());
+            var htmlStr = "<table id='studentsInfo' class='table table-bordered'><tr><th>学号</th><th>姓名</th><th>状态</th></tr></table>"
+            var button = "<div style='text-align:center;margin:5px auto;'>" +
+                    "<button class='btn btn-primary' onclick='unbindBatch();'><i class='fa fa-lg fa-unlock-alt'></i> 解除绑定</button> " +
+                    "<span class='text-blue glyphicon glyphicon-info-sign' data-toggle='tooltip' data-placement='right' title='仅对获取信息成功的记录有效'></span> " +
+                    "</div>"
+            $('studentsInfo').remove();
+            var formData = new FormData();
+            var files = document.getElementById('inputFile').files;
+            var student = files[0];
+            formData.append('student', student);
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/home/unbind/getStudentsInfo', true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    if (this.response != 'fail') {
+                        $('#batchRst').html(htmlStr).append(button);
+                        var studentsInfo = JSON.parse(this.response);
+                        studentsInfo.forEach(function (item) {
+                            var row = document.getElementById('studentsInfo').insertRow(), column;
+                            column = row.insertCell(0);
+                            column.innerHTML = item.studentID;
+                            column = row.insertCell(1);
+                            column.innerHTML = item.studentName;
+                            column = row.insertCell(2);
+                            if (item.status) {
+                                column.innerHTML = "<i class='fa fa-lg fa-check-circle-o text-green' data-toggle='tooltip' data-placement='right' title='获取信息成功'></i> ";
+                            } else {
+                                column.innerHTML = "<i class='fa fa-lg fa-times-circle-o text-red' data-toggle='tooltip' data-placement='right' title='这个学生不存在或者没有选您的课'></i> ";
+                            }
+                        });
+                        $("[data-toggle='tooltip']").tooltip();
+                    } else {
+                        alert('抱歉,获取学生信息失败,请重试.')
+                    }
+                } else {
+                    alert('服务器发生错误');
+                }
+            }
+            xhr.send(formData);
+        }
+    });
+
+    function getStudentInfo() {
+        var studentID = $('#inputStudentID').val();
+        if (studentID == '') {
+            alert('请输入学号');
+        } else {
+            var htmlStr = "<table id='studentInfo' class='table table-bordered'><th>学号</th><th>姓名</th><th>操作</th></table>"
+            $('studentInfo').remove();
+            var xhr = new XMLHttpRequest(),
+                    params = '?studentID=' + studentID,
+                    url = '/home/unbind/getStudentInfo';
+            xhr.open('GET', url + params, true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    switch (this.response) {
+                        case 'error':
+                            $('#singleRst').html("<p class='text-center'>查看学生失败</p>");
+                            break;
+                        case 'nothing':
+                            $('#singleRst').html("<p class='text-center'>这个学生不存在或者没有选您的课</p>");
+                            break;
+                        default:
+                            $('#singleRst').html(htmlStr);
+                            var studentInfo, row = document.getElementById('studentInfo').insertRow(1), column;
+                            studentInfo = JSON.parse(this.response);
+                            column = row.insertCell(0);
+                            column.innerHTML = studentInfo.studentID;
+                            column = row.insertCell(1);
+                            column.innerHTML = studentInfo.studentName;
+                            column = row.insertCell(2);
+                            column.innerHTML = "<button class='btn btn-primary btn-sm' onclick='unbindSingle(this);' data-toggle='tooltip' data-placement='right' title='解除绑定'> " +
+                            "<i class='fa fa-lg fa-unlock-alt'></i> " +
+                            "</button>";
+                            $("[data-toggle='tooltip']").tooltip();
+                            break;
+                    }
+                } else {
+                    alert('服务器发生错误');
+                }
+            }
+            xhr.send();
+        }
+    }
+
+    function unbindSingle(button) {
+        var studentID = $(button).parents('tr').children('td').eq(0).text();
+        var xhr = new XMLHttpRequest(),
+                params = '?studentID=' + studentID,
+                url = '/home/unbind/unbindSingle';
+        xhr.open('POST', url + params, true);
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                if (this.response == 'success') {
+                    alert('解除绑定成功!');
+                    location.reload();
+                } else {
+                    alert('解除绑定失败,请重试!');
+                    location.reload();
+                }
+            } else {
+                alert('服务器发生错误');
+            }
+        }
+        xhr.send();
+    }
+    function unbindBatch() {
+        var rows = $('#studentsInfo tr'), students = [];
+        for (var i = 1; i < rows.length; i++) {
+            var cell1 = $(rows[i]).children('td').eq(0);
+            var cell3 = $(rows[i]).children('td').eq(2);
+            if (cell3.children('i').hasClass('text-green')) {
+                students.push(cell1.html());
+            }
+        }
+        console.log(students);
+        var formData = new FormData();
+        formData.append('students', students);
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/home/unbind/unbindBatch', true);
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                if (this.response == 'success') {
+                    alert('解除绑定成功!');
+                    location.reload();
+                } else {
+                    alert('解除绑定失败,请重试!');
+                    location.reload();
+                }
+            } else {
+                alert('服务器发生错误');
+            }
+        }
+        xhr.send(formData);
+    }
+</script>
+</body>
+</html>

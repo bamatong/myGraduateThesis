@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-cn" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+    <!-- 表格 -->
+    <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
+
+    <title><%= title %></title>
+</head>
+<body>
+<!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
+<% include navbar.ejs %>
+<div class="container-fluid">
+    <div class="row">
+        <% include sidebar.ejs %>
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <section class="content-header">
+                <h4>
+                    考勤管理
+                    <small>编辑考勤</small>
+                </h4>
+            </section>
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="box-title">
+                                        <h4>
+                                            按课程选择考勤
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div class="form-group form-inline">
+                                        <label for="courses" class="sr-only">请选择课程</label>
+                                        <select class="form-control" onchange="getCallRec(this)" id="courses">
+                                            <option value="">请选择课程</option>
+                                            <% courses.forEach( function (course) { %>
+                                            <option value="<%= course.courseID %>"><%= course.course %></option>
+                                            <% }); %>
+                                        </select>
+                                        <span class="text-blue glyphicon glyphicon-info-sign" data-toggle="tooltip" data-placement="right" title="选择课程会列出考勤记录和数据"></span>
+                                    </div>
+                                    <div id="callRecList">
+                                        <div id="callRecResult"></div>
+                                        <div class="none text-center" id="description">
+                                            <span class="text-blue glyphicon glyphicon-info-sign">点击行编辑</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="box box-primary">
+                                <div class="box-header">
+                                    <div class="box-title">
+                                        <h4>
+                                            编辑
+                                        </h4>
+                                    </div>
+                                </div>
+                                <div class="box-body">
+                                    <div id="editCallRec">
+                                        <p style="line-height: 50px; text-align: center;">请先选择考勤</p>
+                                    </div>
+                                </div>
+                                <div class="box-footer text-center none" id="editFooter">
+                                    <input type="submit" class="btn btn-primary" value="修改" id="modify"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <% include footer.ejs %>
+    </div>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/javascripts/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="/javascripts/bootstrap.min.js"></script>
+<!-- jQuery plugin to validate form fields designed for Bootstrap -->
+<script src="/javascripts/bootstrapValidator.min.js"></script>
+<!-- 表格 -->
+<script src="/javascripts/jquery.dataTables.min.js"></script>
+<script src="/javascripts/datatables.bootstrap3.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var leaveNum = '<%= leaveNum %>';
+        if(leaveNum != '0') $('#leaveAlert').show();
+        $("[data-toggle='tooltip']").tooltip();
+        var courseID = '<%= courseID %>', callDateID = '<%= callDateID %>';
+        if (courseID && callDateID) {
+            $('#courses').find("option[value=" + courseID + "]").attr("selected", "selected");
+            getCallRec(null, courseID, callDateID);
+        }
+    });
+    function getCallRec(select, course, callDate) {
+        var index, courseID, callRecs;
+        var htmlTable = "<table id='callRecs' class='table table-bordered table-hover'></table>";
+        var table;
+        if (!select) {
+            courseID = course;
+        } else {
+            index = select.options.selectedIndex;
+            courseID = select.options[index].value;
+        }
+        if (courseID) {
+            $('#callRecs').remove();
+            $('#editFooter').hide();
+            $('#editCallRec').html("<p style='line-height: 50px; text-align: center;'>请先选择考勤</p>");
+            $('#description').hide();
+            var xhr = new XMLHttpRequest(),
+                    params = '?courseID=' + courseID,
+                    url = '/home/editCallRec/getCallRec';
+            xhr.open('POST', url + params, true);
+            xhr.onload = function (e) {
+                if (this.status == 200) {
+                    if (this.response != 'fail') {
+                        callRecs = JSON.parse(this.response);
+                        if (callRecs.length) {
+                            $('#description').show();
+                            $('#callRecResult').html(htmlTable);
+                            table = $('#callRecs').dataTable({
+                                "language": {"url": "/dataTables_language.json"},
+                                "data": callRecs,
+                                "columns": [
+                                    {"title": "ID"},
+                                    {"title": "时间"},
+                                    {"title": "到勤率"}
+                                ],
+                                "columnDefs": [{
+                                    "targets": 2,
+                                    "createdCell": function (td, cellData) {
+                                        switch (true) {
+                                            case (cellData >= 60 && cellData <= 80):
+                                                $(td).html("<span class='badge bg-light-blue'>" + cellData + "%</span>");
+                                                break;
+                                            case (cellData > 80 && cellData <= 100):
+                                                $(td).html("<span class='badge bg-green'>" + cellData + "%</span>");
+                                                break;
+                                            default :
+                                                $(td).html("<span class='badge bg-red'>" + cellData + "%</span>");
+                                                break;
+                                        }
+                                    }
+                                }]
+                            }).on('draw.dt', function () {
+                                if (callDate) {
+                                    var rows = table.$('tr');
+                                    rows.each(function () {
+                                        if ($(this).children('td').eq(0).html() == callDate) {
+                                            $(this).click();
+                                        }
+                                    });
+                                }
+                            });
+                            $('#callRecs tbody').on('click', 'tr', function () {
+                                if ($(this).hasClass('selected')) {
+                                    $(this).removeClass('selected');
+                                } else {
+                                    table.$('tr.selected').removeClass('selected');
+                                    $(this).addClass('selected');
+                                    var row = table.$('tr.selected'),
+                                            callDateID = row.children('td').eq(0).html();
+                                    getCallRecDetail(callDateID, courseID);
+                                }
+                            });
+                        } else {
+                            $('#callRecResult').html("<p style='line-height: 50px; text-align: center;'>没有相应的数据</p>");
+                        }
+                    } else {
+                        alert('获取学生考勤信息失败,请重新选择!');
+                    }
+                } else {
+                    alert('服务器发生错误');
+                }
+            };
+            xhr.send();
+        }
+    }
+    function getCallRecDetail(callDateID, courseID) {
+        var callRecDetailData;
+        var table;
+        var htmlTable = "<table id='detailData' class='table table-bordered table-hover'></table>";
+        $('#editFooter').hide();
+        $('#detailData').remove();
+        var xhr = new XMLHttpRequest(),
+                params = '?callDateID=' + callDateID,
+                url = '/home/editCallRec/getCallRecDetail';
+        xhr.open('POST', url + params, true);
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                if (this.response != 'fail') {
+                    callRecDetailData = JSON.parse(this.response).students;
+                    if (callRecDetailData.length) {
+                        $('#editCallRec').html(htmlTable);
+                        table = $('#detailData').dataTable({
+                            "language": {"url": "/dataTables_language.json"},
+                            "data": callRecDetailData,
+                            "columns": [
+                                {"title": "学号"},
+                                {"title": "姓名"},
+                                {"title": "出勤情况"}
+                            ],
+                            "columnDefs": [{
+                                "targets": 2,
+                                "createdCell": function (td, cellData, rowData) {
+                                    $(td).html(
+                                            "<select class='form-control' id='" + rowData[0] + "-status' name='status'>" +
+                                            "<option value='1'>正常</option>" +
+                                            "<option value='2'>旷课</option>" +
+                                            "<option value='3'>请假</option>" +
+                                            "</select>");
+                                    $(td).find("option[value=" + cellData + "]").attr("selected", "selected");
+                                },
+                                "bSortable": false
+                            }]
+                        }).on('draw.dt', function () {
+                            $('#editFooter').show();
+                        });
+                        $('#modify').click(function () {
+                            var id = [], status = [], student = {};
+                            var rows = table.$('tr');
+                            rows.each(function () {
+                                id.push($(this).children('td').eq(0).html());
+                                status.push($(this).children('td').eq(2).find("option:selected").val());
+                            });
+                            if(id.length != 0 && status.length != 0){
+                                student.id = id;
+                                student.status = status;
+                                modifyStatus(callDateID, student, courseID);
+                            }
+                        });
+                    }
+                } else {
+                    alert('获取考勤记录详细信息失败,请重新选择!');
+                }
+            } else {
+                alert('服务器发生错误');
+            }
+        };
+        xhr.send();
+    }
+    function modifyStatus(callDateID, student, courseID) {
+        var formData = new FormData();
+        formData.append('id', student.id);
+        formData.append('status', student.status);
+        var xhr = new XMLHttpRequest(),
+                params = '?callDateID=' + callDateID,
+                url = '/home/editCallRec/modifyStatus';
+        xhr.open('POST', url + params, true);
+        xhr.onload = function (e) {
+            if (this.status == 200) {
+                if (this.response == 'success') {
+                    alert('修改成功!');
+                    var url = '/home/editCallRec',
+                            params = '?courseID=' + courseID + '&callDateID=' + callDateID;
+                    window.location.href = url + params;
+                } else {
+                    alert('抱歉,修改失败!');
+                }
+            } else {
+                alert('服务器发生错误');
+            }
+        };
+        xhr.send(formData);
+    }
+</script>
+</body>
+</html>

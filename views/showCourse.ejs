@@ -7,15 +7,11 @@
     <meta name="author" content="tzhongwei">
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
-
     <!-- font Awesome -->
     <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
-
     <!-- Custom style -->
     <link rel="stylesheet" href="/stylesheets/style.css"/>
-
     <link rel="stylesheet" href="/stylesheets/datatables.bootstrap3.css"/>
-
     <title><%= title %></title>
 </head>
 <body>
@@ -28,7 +24,7 @@
             <section class="content-header">
                 <h4>
                     课程管理
-                    <small>查看和编辑</small>
+                    <small>查看课程</small>
                 </h4>
             </section>
             <section class="content">
@@ -79,35 +75,38 @@
 <script src="/javascripts/jquery.min.js"></script>
 <!-- Include all compiled plugins (below), or include individual files as needed -->
 <script src="/javascripts/bootstrap.min.js"></script>
-<!-- jQuery plugin to validate form fields designed for Bootstrap -->
-<script src="/javascripts/bootstrapValidator.min.js"></script>
-
+<!-- 表格 -->
 <script src="/javascripts/jquery.dataTables.min.js"></script>
 <script src="/javascripts/datatables.bootstrap3.js"></script>
+<!-- Include sha1 JavaScript plugins -->
+<script src="/javascripts/sha1.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        var leaveNum = '<%= leaveNum %>';
+        if (leaveNum != '0') $('#leaveAlert').show();
         var table = $('#courseList').dataTable({
             "language": {"url": "/dataTables_language.json"}
         });
         $('#courseList tbody').on('click', 'tr', function () {
-            $(this).addClass('selected');
-            var row = table.$('tr.selected'),
-                    termID = row.children('td').eq(0).html(),
-                    courseID = row.children('td').eq(1).html(),
-                    year = row.children('td').eq(2).html(),
-                    whichTerm = row.children('td').eq(3).html(),
-                    courseName = row.children('td').eq(4).html(),
-                    url = '/home/showAndEdit/editCourse',
-                    params = '?termID=' + termID +
-                            '&courseID=' + courseID +
-                            '&year=' + year +
-                            '&whichTerm=' + whichTerm +
-                            '&courseName=' + courseName;
-            window.location.href = url + params;
+            if (!$(this).children('td').hasClass('dataTables_empty')) {
+                $(this).addClass('selected');
+                var row = table.$('tr.selected'),
+                        termID = row.children('td').eq(0).html(),
+                        courseID = row.children('td').eq(1).html(),
+                        year = row.children('td').eq(2).html(),
+                        whichTerm = row.children('td').eq(3).html(),
+                        courseName = row.children('td').eq(4).html(),
+                        url = '/home/showAndEdit/editCourse',
+                        params = '?termID=' + termID +
+                                '&courseID=' + courseID +
+                                '&year=' + year +
+                                '&whichTerm=' + whichTerm +
+                                '&courseName=' + courseName;
+                window.location.href = url + params;
+            }
         });
     });
 </script>
-
 </body>
 </html>

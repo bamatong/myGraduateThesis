@@ -19,8 +19,8 @@ PRIMARY KEY (`teacherID`)
 
 CREATE TABLE `student` (
 `studentID`  varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`studentName`  varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
-`token`  char(64) ,
+`studentName`  varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci ,
+`IMEI`  char(20) ,
 PRIMARY KEY (`studentID`)
 )ENGINE=InnoDB;
 
@@ -54,6 +54,7 @@ FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`) ON DELETE CASCADE O
 CREATE TABLE `callDate` (
 `callDateID`  int UNSIGNED NOT NULL AUTO_INCREMENT ,
 `callDate`  date NOT NULL ,
+`attendanceRate` float UNSIGNED NOT NULL ,
 `courseID`  int UNSIGNED NOT NULL ,
 PRIMARY KEY (`callDateID`),
 FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -67,4 +68,16 @@ CREATE TABLE `callRecord` (
 PRIMARY KEY (`callRecordID`),
 FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`) ON DELETE CASCADE ON UPDATE CASCADE,
 FOREIGN KEY (`callDateID`) REFERENCES `callDate` (`callDateID`) ON DELETE CASCADE ON UPDATE CASCADE
+)ENGINE=InnoDB;
+
+CREATE TABLE `leave` (
+`leaveID`  int UNSIGNED NOT NULL AUTO_INCREMENT ,
+`reason`  varchar(70) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`leaveDate`  date NOT NULL ,
+`accept` smallint(1) UNSIGNED NOT NULL,
+`studentID`  varchar(15) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`courseID`  int UNSIGNED NOT NULL ,
+PRIMARY KEY (`leaveID`),
+FOREIGN KEY (`studentID`) REFERENCES `student` (`studentID`) ON DELETE CASCADE ON UPDATE CASCADE,
+FOREIGN KEY (`courseID`) REFERENCES `course` (`courseID`) ON DELETE CASCADE ON UPDATE CASCADE,
 )ENGINE=InnoDB;
