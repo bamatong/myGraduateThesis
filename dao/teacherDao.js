@@ -675,4 +675,227 @@ teacher.unbindBatch = function (students, callback) {
     });
 };
 
+teacher.call = function (courseID, nfcStudents, QRCodeStudents, callback) {
+    var errStr = "抱歉,操作失败.";
+    var callDateID, attendNum = 0, attendanceRate;
+    var allStudent = [];
+    console.log('teacher.call:' + courseID, nfcStudents, QRCodeStudents);
+    this.connect(function (err, connection) {
+        if (err) {
+            callback(err);
+        } else {
+            connection.beginTransaction(function (err) {
+                if (err) {
+                    callback(errStr);
+                } else {
+                    async.series([
+                        function (callback) {
+                            connection.query('INSERT INTO callDate SET ?', {
+                                callDateID: null,
+                                callDate: moment(new Date()).format('YYYY-MM-DD'),
+                                courseID: courseID
+                            }, function (err, result) {
+                                if (err) {
+                                    callback(errStr);
+                                } else {
+                                    callDateID = result.insertId;
+                                    callback(null);
+                                }
+                            });
+                        },
+                        function (callback) {
+                            //处理二维码签到的学生
+                            if (QRCodeStudents.length == 0) {
+                                callback();
+                            } else {
+                                async.eachSeries(QRCodeStudents, function (student, callback) {
+                                    connection.query('INSERT INTO callRecord SET ?', {
+                                        callRecordID: null,
+                                        status: 1,
+                                        studentID: student,
+                                        callDateID: callDateID
+                                    }, function (err) {
+                                        if (err) {
+                                            callback(errStr);
+                                        } else {
+                                            attendNum++;
+                                            callback(null);
+                                        }
+                                    });
+                                }, function (err) {
+                                    if (err) {
+                                        callback(err);
+                                    } else {
+                                        callback(null);
+                                    }
+                                });
+                            }
+                        },
+                        function (callback) {
+                            //处理nfc学生
+                            if (QRCodeStudents.length == 0) {
+                                callback();
+                            } else {
+                                async.eachSeries(nfcStudents, function (student, callback) {
+                                    //检查该学生是否已经扫描二维码
+                                    connection.query('SELECT * FROM callRecord WHERE studentID = ? AND callDateID = ?', [student, callDateID], function (err, result) {
+                                        if (err) {
+                                            callback(errStr);
+                                        } else {
+                                            if (result.length == 0)
+                                            //没有扫描
+                                                connection.query('INSERT INTO callRecord SET ?', {
+                                                    callRecordID: null,
+                                                    status: 1,
+                                                    studentID: student,
+                                                    callDateID: callDateID
+                                                }, function (err) {
+                                                    if (err) {
+                                                        callback(errStr);
+                                                    } else {
+                                                        attendNum++;
+                                                        callback(null);
+                                                    }
+                                                });
+                                            else
+                                            //有扫描,直接处理下一个学生
+                                                callback(null);
+                                        }
+                                    });
+                                }, function (err) {
+                                    if (err) {
+                                        callback(err);
+                                    } else {
+                                        callback(null);
+                                    }
+                                });
+                            }
+                        },
+                        //获取所有学生
+                        function (callback) {
+                            teacher.showStudent(courseID, function (err, result) {
+                                if (err) {
+                                    callback(errStr)
+                                } else {
+                                    result.forEach(function (item) {
+                                        allStudent.push(item.student_studentID);
+                                    });
+                                    callback(null);
+                                }
+                            });
+                        },
+                        //处理剩余学生
+                        function (callback) {
+                            async.eachSeries(allStudent, function (student, callback) {
+                                connection.query('SELECT * FROM callRecord WHERE studentID = ? AND callDateID = ?', [student, callDateID], function (err, result) {
+                                    if (err) {
+                                        callback(errStr);
+                                    } else {
+                                        if (result.length == 0)
+                                        //该学生没有参加签到,检查有否请求请假
+                                            connection.query('SELECT `status` FROM `leave` WHERE studentID = ? AND courseID = ? AND leaveDate = ?',
+                                                [student, courseID, moment(new Date()).format('YYYY-MM-DD')],
+                                                function (err, result) {
+                                                    if (err) {
+                                                        callback(errStr);
+                                                    } else {
+                                                        if (result.length != 0)
+                                                        //有请假
+                                                            switch (result[0].status) {
+                                                                case 0:
+                                                                case 3:
+                                                                    connection.query('INSERT INTO callRecord SET ?', {
+                                                                        callRecordID: null,
+                                                                        status: 2,
+                                                                        studentID: student,
+                                                                        callDateID: callDateID
+                                                                    }, function (err) {
+                                                                        if (err) {
+                                                                            callback(errStr);
+                                                                        } else {
+                                                                            callback(null);
+                                                                        }
+                                                                    });
+                                                                    break;
+                                                                case 2:
+                                                                    connection.query('INSERT INTO callRecord SET ?', {
+                                                                        callRecordID: null,
+                                                                        status: 3,
+                                                                        studentID: student,
+                                                                        callDateID: callDateID
+                                                                    }, function (err) {
+                                                                        if (err) {
+                                                                            callback(errStr);
+                                                                        } else {
+                                                                            callback(null);
+                                                                        }
+                                                                    });
+                                                                    break;
+                                                                default :
+                                                                    console.log('switch err');
+                                                                    break;
+                                                            }
+                                                        else {
+                                                            //没请假
+                                                            connection.query('INSERT INTO callRecord SET ?', {
+                                                                callRecordID: null,
+                                                                status: 2,
+                                                                studentID: student,
+                                                                callDateID: callDateID
+                                                            }, function (err) {
+                                                                if (err) {
+                                                                    callback(errStr);
+                                                                } else {
+                                                                    callback(null);
+                                                                }
+                                                            });
+                                                        }
+                                                    }
+                                                });
+                                        else
+                                            callback(null);
+                                    }
+                                });
+                            }, function (err) {
+                                if (err) {
+                                    callback(err);
+                                } else {
+                                    callback(null);
+                                }
+                            });
+                        },
+                        //更新出勤率
+                        function (callback) {
+                            attendanceRate = (attendNum / (allStudent.length) * 100).toFixed(2);
+                            connection.query('UPDATE callDate SET attendanceRate = ? WHERE callDateID = ?', [attendanceRate, callDateID], function (err) {
+                                if (err) {
+                                    callback(errStr);
+                                } else {
+                                    callback(null);
+                                }
+                            });
+                        }
+                    ], function (err) {
+                        if (err) {
+                            connection.rollback(function () {
+                                callback(err);
+                            });
+                        } else {
+                            connection.commit(function (err) {
+                                if (err) {
+                                    connection.rollback(function () {
+                                        callback(errStr);
+                                    });
+                                }
+                                callback();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+        connection.release();
+    });
+};
+
 module.exports = teacher;

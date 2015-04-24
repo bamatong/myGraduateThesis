@@ -28,14 +28,17 @@ router.post('/', function (req, res, next) {
             classInfo[fieldname] = val;
         });
         busboy.on('finish', function () {
-            course.addClass(req.session.userID, classInfo, function (err) {
-                if(err) {
-                    res.end(err);
-                }
-                else {
-                    res.end('success');
-                }
-            });
+            if (classInfo.student.length) {
+                res.end('在文件中没有找到学生信息');
+            } else
+                course.addClass(req.session.userID, classInfo, function (err) {
+                    if (err) {
+                        res.end(err);
+                    }
+                    else {
+                        res.end('success');
+                    }
+                });
         });
         req.pipe(busboy);
     } else {

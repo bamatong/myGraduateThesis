@@ -1,11 +1,28 @@
-<% include header.ejs %>
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+
+    <title><%= title %></title>
+</head>
 <body>
 <!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
 <% include navbar.ejs %>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row row-offcanvas row-offcanvas-left">
         <% include sidebar.ejs %>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-md-10 main">
             <section class="content-header">
                 <h4>
                     解绑手机
@@ -56,7 +73,7 @@
                                     <input type="file" id="inputFile" name="student" style="display: none">
                                     <span id="file"></span>
 
-                                    <p class="help-block">支持Excel文件和txt格式文件,编码格式为:"utf-8",数据为一列,内容学生学号.</p>
+                                    <p class="help-block">支持Excel文件和txt格式文件,编码格式为:"utf-8",数据为一列,内容为学生学号.</p>
 
                                     <div class="table-responsive" id="batchRst">
                                     </div>
@@ -67,8 +84,6 @@
                 </div>
             </section>
         </div>
-    </div>
-    <div class="row">
         <% include footer.ejs %>
     </div>
 </div>
@@ -81,6 +96,9 @@
 <script type="text/javascript">
     var leaveNum = '<%= leaveNum %>';
     if (leaveNum != '0') $('#leaveAlert').show();
+    $('[data-toggle=offcanvas]').click(function() {
+        $('.row-offcanvas').toggleClass('active');
+    });
     //鉴定回车
     $(document).keyup(function (e) {
         var curKey = e.which;
@@ -130,7 +148,7 @@
                 } else {
                     alert('服务器发生错误');
                 }
-            }
+            };
             xhr.send(formData);
         }
     });
@@ -173,7 +191,7 @@
                 } else {
                     alert('服务器发生错误');
                 }
-            }
+            };
             xhr.send();
         }
     }
@@ -196,7 +214,7 @@
             } else {
                 alert('服务器发生错误');
             }
-        }
+        };
         xhr.send();
     }
     function unbindBatch() {
@@ -225,7 +243,7 @@
             } else {
                 alert('服务器发生错误');
             }
-        }
+        };
         xhr.send(formData);
     }
 </script>

@@ -1,5 +1,22 @@
-<% include header.ejs %>
-<body style="background: #f9f9f9">
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="tzhongwei">
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" href="/stylesheets/bootstrap.min.css"/>
+
+    <!-- font Awesome -->
+    <link rel="stylesheet" href="/stylesheets/font-awesome.min.css"/>
+
+    <!-- Custom style -->
+    <link rel="stylesheet" href="/stylesheets/style.css"/>
+
+    <title><%= title %></title>
+</head>
+<body style="margin-bottom: 60px">
 <nav class="navbar navbar-inverse navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -72,11 +89,6 @@
                         <label for="inputPassword" class="sr-only">密码</label>
                         <input type="password" name="password" class="form-control" placeholder="密码" required>
 
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox" value="remember-me"> 记住我
-                            </label>
-                        </div>
                         <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
                     </div>
                 </form>
@@ -104,7 +116,7 @@
         </div>
     </div>
 </div><!-- end container -->
-<div class="footer" style="width: 100%">
+<div class="footer" style="width: 100%;position: absolute;bottom: 0;">
     <div class="github">
         <a href="https://github.com/bamatong/myGraduateThesis" type="button" class="btn btn-default btn-sm"
            aria-label="Left Align">

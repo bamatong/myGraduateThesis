@@ -6,6 +6,8 @@
 var express = require('express');
 var teacher = require('../dao/teacherDao');
 var leave = require('../dao/leaveDao');
+var redis = require('redis');
+var async = require('async');
 var router = express.Router();
 
 router.post('/signin', function (req, res, next) {
@@ -94,7 +96,7 @@ router.post('/modifyCallRec', function (req, res, next) {
     }
 });
 
-router.get('/getUserInfo', function(req,res,next){
+router.get('/getUserInfo', function (req, res, next) {
     if (req.session.teacher) {
         var userInfo = {};
         userInfo.id = req.session.teacher;
@@ -140,7 +142,7 @@ router.post('/modifyPwd', function (req, res, next) {
     }
 });
 
-router.get('/getLeaves', function(req,res,next){
+router.get('/getLeaves', function (req, res, next) {
     if (req.session.teacher) {
         leave.getLeave(req.session.teacher, function (err, result) {
             if (err) {
@@ -167,7 +169,7 @@ router.get('/getLeaves', function(req,res,next){
     }
 });
 
-router.post('/agreeLeave', function(req,res,next) {
+router.post('/agreeLeave', function (req, res, next) {
     if (req.session.teacher) {
         if (!req.body) {
             res.end('没有选择请假记录');
@@ -176,18 +178,18 @@ router.post('/agreeLeave', function(req,res,next) {
                 courseName = req.body.courseName,
                 leaveDate = req.body.leaveDate,
                 studentID = req.body.studentID;
-            teacher.agreeLeave(leaveID, courseName, leaveDate, studentID, function(err){
+            teacher.agreeLeave(leaveID, courseName, leaveDate, studentID, function (err) {
                 if (err) {
                     res.end(err);
                 } else {
                     res.end('success');
                 }
-            })
+            });
         }
     }
 });
 
-router.post('/disagreeLeave', function(req,res,next) {
+router.post('/disagreeLeave', function (req, res, next) {
     if (req.session.teacher) {
         if (!req.body) {
             res.end('没有选择请假记录');
@@ -196,13 +198,123 @@ router.post('/disagreeLeave', function(req,res,next) {
                 courseName = req.body.courseName,
                 leaveDate = req.body.leaveDate,
                 studentID = req.body.studentID;
-            teacher.disagreeLeave(leaveID, courseName, leaveDate, studentID, function(err){
+            teacher.disagreeLeave(leaveID, courseName, leaveDate, studentID, function (err) {
                 if (err) {
                     res.end(err);
                 } else {
                     res.end('success');
                 }
-            })
+            });
+        }
+    }
+});
+
+router.post('/startCall', function (req, res, next) {
+    if (req.session.teacher) {
+        if (!req.body) {
+            res.end('缺少参数');
+        } else {
+            var errStr = "抱歉,操作失败,请重试.";
+            var randomNum = req.body.randomNum;
+            console.log('startCall: ' + randomNum);
+            var redisClient = redis.createClient();
+            redisClient.on("error", function (err) {
+                console.log("Error " + err);
+                res.end('fail');
+            });
+            async.series([
+                function (callback) {
+                    redisClient.exists(randomNum, function (err, reply) {
+                        if (err) callback(errStr);
+                        if (reply == 1) {
+                            callback('fail');
+                        } else {
+                            callback();
+                        }
+                    });
+                },
+                function (callback) {
+                    redisClient.lpush(randomNum, 'start', function (err) {
+                        if (err) callback(errStr);
+                        else callback();
+                    });
+                },
+                function (callback) {
+                    redisClient.expire(randomNum, 3600, function (err) {
+                        if (err) callback(errStr);
+                        else callback();
+                    });
+                }
+            ], function (err) {
+                if (err) {
+                    res.end(err);
+                } else {
+                    redisClient.quit();
+                    res.end('success');
+                }
+            });
+        }
+    }
+});
+
+router.post('/endCall', function (req, res, next) {
+    if (req.session.teacher) {
+        if (!req.body) {
+            res.end('缺少参数');
+        } else {
+            var errStr = '抱歉,操作失败,请重试.';
+            var randomNum = req.body.randomNum,
+                courseID = req.body.courseID,
+            //nfc签到的学生
+                nfcStudents = JSON.parse(req.body.students);
+            var QRCodeStudents, listLength;
+            console.log('endCall: ' + randomNum);
+            var redisClient = redis.createClient();
+            async.series([
+                function (callback) {
+                    //获取二维码签到的学生
+                    redisClient.llen(randomNum, function (err, reply) {
+                        if (err) {
+                            callback(errStr);
+                        }
+                        if (reply == 0 || reply == 1) {
+                            //没有扫二维码的学生
+                            QRCodeStudents = [];
+                            callback();
+                        } else {
+                            listLength = reply;
+                            redisClient.lrange(randomNum, 0, listLength - 2, function (err, replies) {
+                                if (err) {
+                                    callback(errStr);
+                                }
+                                QRCodeStudents = replies;
+                                callback();
+                            });
+                        }
+                    });
+                },
+                function (callback) {
+                    teacher.call(courseID, nfcStudents, QRCodeStudents, function (err) {
+                        if (err) {
+                            callback(err);
+                        } else {
+                            callback();
+                        }
+                    });
+                }
+            ], function (err) {
+                if (err) {
+                    res.end(err);
+                } else {
+                    res.end('success');
+                    redisClient.del(randomNum, function (err) {
+                        if (err) {
+                            console.log(err);
+                        }
+                        redisClient.quit();
+                    });
+                }
+            });
         }
     }
 });

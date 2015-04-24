@@ -53,7 +53,7 @@ leave.getHandledLeave = function (teacherID, callback) {
                         } else {
                             result.forEach(function (item) {
                                 courseIDs.push(item.C_courseID);
-                                item.B_leaveDate = moment(item.B_leaveDate).format('YYYY-MM-DD')
+                                item.B_leaveDate = moment(item.B_leaveDate).format('YYYY-MM-DD');
                             });
                             callback(null, result);
                         }
@@ -125,7 +125,7 @@ leave.getUnhandledLeave = function (teacherID, callback) {
                         } else {
                             result.forEach(function (item) {
                                 courseIDs.push(item.C_courseID);
-                                item.B_leaveDate = moment(item.B_leaveDate).format('YYYY-MM-DD')
+                                item.B_leaveDate = moment(item.B_leaveDate).format('YYYY-MM-DD');
                             });
                             callback(null, result);
                         }

@@ -20,9 +20,9 @@
 <!-- modified from url=(0041)http://v3.bootcss.com/examples/dashboard/ -->
 <% include navbar.ejs %>
 <div class="container-fluid">
-    <div class="row">
+    <div class="row row-offcanvas row-offcanvas-left">
         <% include sidebar.ejs %>
-        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-sm-9 col-md-10 main">
             <section class="content-header">
                 <h4>
                     考勤管理
@@ -84,8 +84,6 @@
                 </div>
             </section>
         </div>
-    </div>
-    <div class="row">
         <% include footer.ejs %>
     </div>
 </div>
@@ -104,6 +102,9 @@
     $(document).ready(function () {
         var leaveNum = '<%= leaveNum %>';
         if(leaveNum != '0') $('#leaveAlert').show();
+        $('[data-toggle=offcanvas]').click(function() {
+            $('.row-offcanvas').toggleClass('active');
+        });
         $("[data-toggle='tooltip']").tooltip();
         var courseID = '<%= courseID %>', callDateID = '<%= callDateID %>';
         if (courseID && callDateID) {

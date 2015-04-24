@@ -5,6 +5,8 @@
  */
 var express = require('express');
 var student = require('../dao/studentDao');
+var redis = require('redis');
+var async = require('async');
 var router = express.Router();
 
 router.post('/signin', function (req, res, next) {
@@ -91,8 +93,47 @@ router.post('/askForLeave', function (req, res, next) {
                 courseID = req.body.courseID;
             student.askForLeave(req.session.student, reason, leaveDate, courseID, function (err) {
                 if (err) {
-                    res.end('fail');
+                    res.end(err);
                 } else {
+                    res.end('success');
+                }
+            });
+        }
+    }
+    else {
+        res.end('抱歉,你还没有登录');
+    }
+});
+
+router.post('/QRCodeCall', function (req, res, next) {
+    if (req.session.student) {
+        if (!req.body) {
+            res.end('没有选择课程');
+        } else {
+            var randomNum = req.body.randomNum,
+                courseID = req.body.courseID,
+                studentID = req.session.student;
+            console.log('QRCodeCall: ' + randomNum, studentID);
+            var redisClient = redis.createClient();
+            async.series([
+                function (callback) {
+                    student.checkStudent(studentID, courseID, function (err) {
+                        if (err) callback('你没有选择这门课');
+                        else callback();
+                    });
+                },
+                function (callback) {
+                    redisClient.lpushx(randomNum, studentID, function (err, reply) {
+                        if (err) callback('扫描失败,请重试');
+                        if(reply == 0) callback('这门课没有开始或已停止点名');
+                        else callback();
+                    });
+                }
+            ], function (err) {
+                if (err) {
+                    res.end(err);
+                } else {
+                    redisClient.quit();
                     res.end('success');
                 }
             });

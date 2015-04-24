@@ -190,22 +190,56 @@ student.getCallRec = function (studentID, courseID, callback) {
 };
 
 student.askForLeave = function (studentID, reason, leaveDate, courseID, callback) {
+    var errStr = "抱歉,请求失败,请重试.";
+    this.connect(function (err, connection) {
+        if (err) {
+            callback(errStr);
+        } else {
+            connection.query('SELECT * FROM `leave` WHERE studentID = ? AND courseID = ? AND leaveDate = ?',
+                [studentID, courseID, moment(new Date(leaveDate)).format('YYYY-MM-DD')],
+                function (err, result) {
+                    if (err) {
+                        callback(errStr);
+                    } else {
+                        if (result.length == 0)
+                            connection.query(
+                                "INSERT INTO `leave` (`reason`, `leaveDate`, `status`, `studentID`, `courseID`) VALUES (" +
+                                connection.escape(reason) + "," + connection.escape(leaveDate) + ",'0'," + connection.escape(studentID) + "," + connection.escape(courseID) + ")"
+                                , function (err) {
+                                    if (err) {
+                                        callback(errStr);
+                                    } else {
+                                        callback(null);
+                                    }
+                                });
+                        else
+                            callback('抱歉,当天您已将请过假了.');
+                    }
+                });
+
+        }
+        connection.release();
+    });
+};
+
+//检查学生是否有选courseID这门课
+student.checkStudent = function (studentID, courseID, callback) {
     this.connect(function (err, connection) {
         if (err) {
             callback(err);
         } else {
-            connection.query(
-                "INSERT INTO `leave` (`reason`, `leaveDate`, `status`, `studentID`, `courseID`) VALUES (" +
-                connection.escape(reason) + "," + connection.escape(leaveDate) + ",'0'," + connection.escape(studentID) + "," + connection.escape(courseID) + ")"
-                , function (err) {
-                    if (err) {
-                        console.log(err);
-                        callback(err)
-                    } else {
+            connection.query("SELECT  * FROM `class` WHERE courseID = ? AND studentID = ?", [courseID, studentID], function (err, result) {
+                if (err) {
+                    callback(err);
+                } else {
+                    if (result.length == 0)
+                        callback('no');
+                    else
                         callback(null);
-                    }
-                });
+                }
+            });
         }
+        connection.release();
     });
 };
 
