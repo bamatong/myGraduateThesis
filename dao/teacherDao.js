@@ -603,13 +603,13 @@ teacher.getStudentsInfo = function (teacherID, students, callback) {
         } else {
             var studentsInfo = [], tmp = {};
             async.eachSeries(students, function (item, callback) {
-                connection.query(sqlStr, [teacherID, item[0]], function (err, result) {
+                connection.query(sqlStr, [teacherID, item], function (err, result) {
                     if (err) {
                         callback('error');
                     } else {
                         if (result.length == 0) {
                             tmp = {};
-                            tmp.studentID = item[0];
+                            tmp.studentID = item;
                             tmp.studentName = "空";
                             tmp.status = 0;
                             studentsInfo.push(tmp);

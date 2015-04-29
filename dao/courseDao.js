@@ -40,7 +40,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                         else {
                             if (result.length) {
                                 termID = result[0].termID;
-                                //console.log('旧学期');
+                                console.log('旧学期');
                                 connection.query(
                                     'SELECT * ' +
                                     'FROM course,teacher,class ' +
@@ -56,7 +56,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                             if (result.length) {
                                                 callback('抱歉,本学期已存在该课程!');
                                             } else {
-                                                //console.log('新课程');
+                                                console.log('新课程');
                                                 connection.query('INSERT INTO course SET ?',
                                                     {
                                                         courseID: null,
@@ -100,7 +100,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                                 if (err) {
                                                                     callback(errMsg);
                                                                 } else {
-                                                                    //console.log(sqlStr);
+                                                                    console.log(sqlStr);
                                                                     connection.query(sqlStr, function (err, result) {
                                                                         if (err) {
                                                                             connection.rollback(function () {
@@ -127,7 +127,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                     });
                             }
                             else {
-                                //console.log('新学期');
+                                console.log('新学期');
                                 connection.query('INSERT INTO term SET ?',
                                     {
                                         termID: null,
@@ -141,7 +141,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                             });
                                         } else {
                                             termID = result.insertId;
-                                            //console.log('新课程');
+                                            console.log('新课程');
                                             connection.query('INSERT INTO course SET ?',
                                                 {
                                                     courseID: null,
@@ -185,7 +185,7 @@ course.addClass = function (teacherID, classInfo, callback) {
                                                             if (err) {
                                                                 callback(errMsg);
                                                             } else {
-                                                                //console.log(sqlStr);
+                                                                console.log(sqlStr);
                                                                 connection.query(sqlStr, function (err, result) {
                                                                     if (err) {
                                                                         connection.rollback(function () {

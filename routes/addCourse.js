@@ -17,18 +17,19 @@ router.post('/', function (req, res, next) {
                 var line = data.toString().split(/\n|\r\n/);
                 var student = [];
                 line.forEach(function (value) {
-                    if (value) student.push(value);  //删除空行
+                    if (value) student.push(value.split(/[\t|\s]/));  //删除空行
                 });
                 classInfo[fieldname] = student;
             });
             file.on('end', function () {
+                console.log(classInfo.student);
             });
         });
         busboy.on('field', function (fieldname, val, fieldnameTruncated, valTruncated) {
             classInfo[fieldname] = val;
         });
         busboy.on('finish', function () {
-            if (classInfo.student.length) {
+            if (classInfo.student.length == 0) {
                 res.end('在文件中没有找到学生信息');
             } else
                 course.addClass(req.session.userID, classInfo, function (err) {

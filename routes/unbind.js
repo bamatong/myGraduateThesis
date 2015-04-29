@@ -42,7 +42,7 @@ router.post('/getStudentsInfo', function (req, res, next) {
             file.on('data', function (data) {
                 var line = data.toString().split(/\n|\r\n/);
                 line.forEach(function (value) {
-                    if (value) students.push(value.split(/[\t|\s]/));  //删除空行
+                    if (value) students.push(value);  //删除空行
                 });
             });
         });
